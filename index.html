@@ -212,6 +212,44 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
   display:flex;gap:8px;margin-bottom:14px;
 }
 .export-bar .btn{flex:1;font-size:12px;padding:8px 0}
+
+.habit-detail{
+  background:#fafaf8;border:1px solid #f0eeea;border-radius:8px;
+  padding:10px 12px;margin:-6px 0 12px 34px;
+  font-size:12px;line-height:1.7;color:var(--t2);
+}
+.habit-detail .hd-line{padding:1px 0}
+.habit-detail .hd-tools{
+  margin-top:6px;padding-top:6px;border-top:1px dashed #e6e4e0;
+  color:var(--bl);font-size:11px;
+}
+.habit-detail .hd-warn{color:var(--red);font-weight:600;padding:1px 0}
+
+.info-btn{
+  background:none;border:none;color:#ccc;font-size:16px;
+  width:26px;height:26px;cursor:pointer;border-radius:50%;
+  -webkit-tap-highlight-color:transparent;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.info-btn:active{background:#f0eeea;color:var(--red)}
+
+.history-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid #f0eeea;
+}
+.history-item:last-child{border-bottom:none}
+.history-item .h-left{flex-shrink:0;text-align:center;min-width:62px}
+.history-item .h-date{font-size:13px;font-weight:600}
+.history-item .h-day{font-size:11px;color:var(--t2);margin-top:2px}
+.history-item .h-dots{display:flex;gap:3px;flex:1;justify-content:center}
+.history-item .h-dot{
+  width:18px;height:18px;border-radius:50%;
+  background:#f0eeea;color:#ccc;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;
+}
+.history-item .h-dot.done{background:var(--gn);color:#fff}
+.history-item .h-right{flex-shrink:0}
 </style>
 </head>
 <body>
@@ -294,10 +332,12 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
     <div class="jt active" onclick="switchJournalTab('daily')">📝 日志</div>
     <div class="jt" onclick="switchJournalTab('weekly')">📈 周复盘</div>
     <div class="jt" onclick="switchJournalTab('monthly')">💰 月检视</div>
+    <div class="jt" onclick="switchJournalTab('history')">📊 打卡历史</div>
   </div>
   <div id="journalList"><div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志</p></div></div>
   <div id="weeklyList" style="display:none"><div class="empty-state"><div class="icon">📈</div><p>还没写过周复盘</p></div></div>
   <div id="monthlyList" style="display:none"><div class="empty-state"><div class="icon">💰</div><p>还没写过月检视</p></div></div>
+  <div id="historyList" style="display:none"><div class="empty-state"><div class="icon">📊</div><p>还没打过卡</p><p style="font-size:12px;margin-top:8px">开始打卡后这里会显示每日习惯完成情况</p></div></div>
 </div>
 
 <!-- ===== DISCIPLINE ===== -->
@@ -359,6 +399,73 @@ function def(){return{
 function L(){try{var d=JSON.parse(localStorage.getItem(K));return d||def()}catch(e){return def()}}
 function S(d){localStorage.setItem(K,JSON.stringify(d))}
 
+// ==================== HABIT INFO ====================
+// 每个习惯的详细操作指引：看什么 / 去哪看 / 用什么工具
+const HABIT_INFO={
+  h1:{
+    title:'8:00 盘前快扫',icon:'🌅',duration:'5-10分钟',
+    lines:[
+      '看什么：',
+      '• 美股收盘：道指/纳指/标普、热门中概股',
+      '• 港股夜盘+ADR：腾讯/阿里/京东等',
+      '• 财经早餐：美联储动作 / 监管政策',
+      '• 隔夜重大新闻：地缘/财报预警',
+      '',
+      '工具：富途牛牛 · 华尔街见闻 · 格隆汇'
+    ]
+  },
+  h2:{
+    title:'9:30-10:30 只看不碰',icon:'🛑',duration:'60分钟（最关键）',
+    lines:[
+      '看什么：',
+      '• 集合竞价强弱（9:00-9:30）',
+      '• 开盘后资金流向（北水/板块轮动）',
+      '• 持仓股的开盘表现',
+      '• 自选股排序找强势股',
+      '',
+      '⚠ 绝对不下单 · 不追涨 · 不被情绪带',
+      '工具：富途牛牛 · 雪球'
+    ]
+  },
+  h3:{
+    title:'12:00 午休看一眼',icon:'📊',duration:'5分钟',
+    lines:[
+      '看什么：',
+      '• 上午大盘走势（恒指+板块）',
+      '• 持仓股上午表现',
+      '• 突发新闻/公告',
+      '• 下午重要数据发布（央行/统计局）',
+      '',
+      '工具：富途牛牛 · 阿斯达克'
+    ]
+  },
+  h4:{
+    title:'16:10 写三句话日记',icon:'📝',duration:'5-10分钟',
+    lines:[
+      '三个问题（必答）：',
+      '1️⃣ 今天我有什么冲动没执行？为什么？',
+      '2️⃣ 持仓/关注股有什么变化值得关注？',
+      '3️⃣ 今天我学到了什么（哪怕很小）？',
+      '',
+      '示例：腾讯跌5%想加仓，规则要求等3天观察，忍住没动',
+      '工具：直接点本条卡片跳到"日志"页写'
+    ]
+  },
+  h5:{
+    title:'晚上读研报/财报 30分钟',icon:'📖',duration:'30分钟',
+    lines:[
+      '优先级（从高到低）：',
+      '1. 持仓股最新季报/中报（必读）',
+      '2. 自选股中错过的财报',
+      '3. 行业研究（消费/医药/科技）',
+      '4. 卖方深度研报',
+      '',
+      '阅读方法：先看MD&A抓主要矛盾，对比上季度和去年同期',
+      '工具：港交所披露易 · 富途研报 · 雪球深度'
+    ]
+  }
+};
+
 // ==================== TOAST ====================
 var _tt;
 function toast(msg){
@@ -395,10 +502,12 @@ function switchTab(t){
 function switchJournalTab(t){
   _journalSubTab=t;
   document.querySelectorAll('.journal-tabs .jt').forEach(function(e){e.classList.remove('active')});
-  document.querySelector('.journal-tabs .jt:nth-child('+(t==='daily'?1:t==='weekly'?2:3)+')').classList.add('active');
+  var idx=t==='daily'?1:t==='weekly'?2:t==='monthly'?3:4;
+  document.querySelector('.journal-tabs .jt:nth-child('+idx+')').classList.add('active');
   document.getElementById('journalList').style.display=t==='daily'?'block':'none';
   document.getElementById('weeklyList').style.display=t==='weekly'?'block':'none';
   document.getElementById('monthlyList').style.display=t==='monthly'?'block':'none';
+  document.getElementById('historyList').style.display=t==='history'?'block':'none';
   R_journal();
 }
 
@@ -433,11 +542,11 @@ function R_dashboard(){
   var h=document.getElementById('todayChecklist'),td=today(),hd=d.habits[td]||{};
   var jDone=d.journal.filter(function(j){return j.date===td}).length>0;
   var items=[
-    {id:'h1',icon:'🌅',name:'8:00 盘前快扫',done:!!hd.h1},
-    {id:'h2',icon:'🛑',name:'9:30-10:30 只看不碰',done:!!hd.h2},
-    {id:'h3',icon:'📊',name:'12:00 午休看一眼',done:!!hd.h3},
-    {id:'h4',icon:'📝',name:'16:10 写三句话日记',done:!!hd.h4||jDone,clickJournal:true},
-    {id:'h5',icon:'📖',name:'晚上读研报/财报 30 分钟',done:!!hd.h5}
+    {id:'h1',done:!!hd.h1},
+    {id:'h2',done:!!hd.h2},
+    {id:'h3',done:!!hd.h3},
+    {id:'h4',done:!!hd.h4||jDone,clickJournal:true},
+    {id:'h5',done:!!hd.h5}
   ];
 
   h.innerHTML='';
@@ -448,8 +557,9 @@ function R_dashboard(){
       if(x.clickJournal){C_habit(x.id);switchTab('journal')}
       else C_habit(x.id);
     };
-    div.innerHTML='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.icon+' '+x.name+'</div></div>';
-    if(x.done) div.innerHTML+='<div class="time">✓</div>';
+    var info=HABIT_INFO[x.id];
+    div.innerHTML='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+info.icon+' '+info.title+'</div><div class="hint">⏱ '+info.duration+'</div></div>';
+    div.innerHTML+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+x.id+'\')">ⓘ</button>';
     h.appendChild(div);
   });
 
@@ -558,19 +668,27 @@ function R_checkin(){
   var simPct=(l.sim.done/l.sim.target)*20;   // 30 trades → 20%
   document.getElementById('learningPct').textContent=Math.round(itemPct+simPct)+'%';
 
-  // Daily habits
+  // Daily habits — show full HABIT_INFO details inline
   var td=today(),hd=d.habits[td]||{},jDone=d.journal.filter(function(j){return j.date===td}).length>0;
-  var habits=[
-    {id:'h1',icon:'🌅',title:'8:00 盘前快扫',desc:'美股收盘+港交所公告',done:!!hd.h1},
-    {id:'h2',icon:'🛑',title:'9:30-10:30 只看不碰',desc:'开盘一小时绝不交易',done:!!hd.h2},
-    {id:'h3',icon:'📊',title:'12:00 午休看一眼',desc:'检查持仓+大盘方向',done:!!hd.h3},
-    {id:'h4',icon:'📝',title:'16:10 写三句话日记',desc:'冲动/持仓变化/新知识',done:!!hd.h4||jDone},
-    {id:'h5',icon:'📖',title:'晚上读研报/财报30分钟',desc:'深度研究而非刷行情',done:!!hd.h5}
-  ];
   var hb=document.getElementById('dailyHabits');html='';
-  habits.forEach(function(x){
-    html+='<div class="check-item'+(x.done?' done':'')+'" onclick="C_habit(\''+x.id+'\')">';
-    html+='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.icon+' '+x.title+'</div><div class="hint">'+x.desc+'</div></div></div>';
+  ['h1','h2','h3','h4','h5'].forEach(function(id){
+    var info=HABIT_INFO[id];
+    var done=!!hd[id]||(id==='h4'&&jDone);
+    html+='<div class="check-item'+(done?' done':'')+'" onclick="C_habit(\''+id+'\')">';
+    html+='<div class="box">'+(done?'✓':'')+'</div>';
+    html+='<div class="info"><div class="name">'+info.icon+' '+info.title+'</div>';
+    html+='<div class="hint">⏱ '+info.duration+'</div></div>';
+    html+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+id+'\')">ⓘ</button>';
+    html+='</div>';
+    // Detail block under each habit
+    html+='<div class="habit-detail">';
+    info.lines.forEach(function(line){
+      if(line==='') html+='<div style="height:4px"></div>';
+      else if(line.indexOf('⚠')===0) html+='<div class="hd-warn">'+escHtml(line)+'</div>';
+      else if(line.indexOf('工具')===0) html+='<div class="hd-tools">🔧 '+escHtml(line.substring(3))+'</div>';
+      else html+='<div class="hd-line">'+escHtml(line)+'</div>';
+    });
+    html+='</div>';
   });
   hb.innerHTML=html;
 
@@ -618,7 +736,7 @@ function R_journal(){
       html+='</div>';
     });
     list.innerHTML=html;
-  } else {
+  } else if(_journalSubTab==='monthly'){
     var list=document.getElementById('monthlyList');
     if(!d.monthly||d.monthly.length===0){
       list.innerHTML='<div class="empty-state"><div class="icon">💰</div><p>还没写过月检视</p></div>';
@@ -634,7 +752,51 @@ function R_journal(){
       html+='</div>';
     });
     list.innerHTML=html;
+  } else {
+    R_history();
   }
+}
+
+function R_history(){
+  var d=L();
+  var list=document.getElementById('historyList');
+  var dates=Object.keys(d.habits||{}).sort().reverse();
+  if(dates.length===0){
+    list.innerHTML='<div class="empty-state"><div class="icon">📊</div><p>还没打过卡</p><p style="font-size:12px;margin-top:8px">开始打卡后这里会显示每日习惯完成情况</p></div>';
+    return;
+  }
+  var dayNames=['日','一','二','三','四','五','六'];
+  var html='';
+  var todayStr=today();
+  dates.forEach(function(date){
+    var hd=d.habits[date]||{};
+    var jd=d.journal.filter(function(j){return j.date===date}).length>0;
+    var cnt=0;
+    ['h1','h2','h3','h4','h5'].forEach(function(h){if(hd[h]||(h==='h4'&&jd))cnt++});
+    var parts=date.split('-');
+    var dObj=new Date(+parts[0],+parts[1]-1,+parts[2]);
+    var dayName='周'+dayNames[dObj.getDay()];
+    var tagClass,tagLabel;
+    if(cnt===5){tagClass='tag-gn';tagLabel='全勤';}
+    else if(cnt>=3){tagClass='tag-bl';tagLabel='良好';}
+    else if(cnt>0){tagClass='tag-or';tagLabel='一般';}
+    else {tagClass='tag-red';tagLabel='未做';}
+    var isToday=date===todayStr;
+    html+='<div class="history-item">';
+    html+='<div class="h-left">';
+    html+='<div class="h-date">'+(isToday?'<span style="color:var(--red)">今天</span>':fmt(date))+'</div>';
+    html+='<div class="h-day">'+dayName+'</div>';
+    html+='</div>';
+    html+='<div class="h-dots">';
+    ['h1','h2','h3','h4','h5'].forEach(function(h){
+      var checked=!!hd[h]||(h==='h4'&&jd);
+      html+='<div class="h-dot'+(checked?' done':'')+'" title="'+HABIT_INFO[h].title+'">'+(checked?'✓':'')+'</div>';
+    });
+    html+='</div>';
+    html+='<div class="h-right"><span class="tag '+tagClass+'">'+tagLabel+' '+cnt+'/5</span></div>';
+    html+='</div>';
+  });
+  list.innerHTML=html;
 }
 
 function delJournal(date){
@@ -782,6 +944,27 @@ function violateRule(n){
     d.discipline.push({rule:n,date:today(),ts:Date.now()});
     S(d);refreshActiveTab();toast('⚠ 已记录第 '+n+' 条违规');
   }
+}
+
+// ==================== HABIT DETAIL MODAL ====================
+function openHabitDetail(id){
+  var info=HABIT_INFO[id];if(!info) return;
+  var lines='';
+  info.lines.forEach(function(line){
+    if(line==='') lines+='<div style="height:6px"></div>';
+    else if(line.indexOf('⚠')===0) lines+='<div class="hd-warn" style="padding:2px 0">'+escHtml(line)+'</div>';
+    else if(line.indexOf('工具')===0) lines+='<div style="margin-top:8px;padding-top:6px;border-top:1px dashed #e6e4e0;color:var(--bl);font-size:11px">🔧 '+escHtml(line.substring(3))+'</div>';
+    else lines+='<div style="padding:2px 0">'+escHtml(line)+'</div>';
+  });
+  openModal();
+  document.getElementById('modalContainer').innerHTML='\
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
+      <div class="modal">\
+        <div class="modal-title">'+info.icon+' '+info.title+'</div>\
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">⏱ '+info.duration+'</div>\
+        <div style="background:#fafaf8;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.7">'+lines+'</div>\
+        <div class="modal-btns"><button class="btn btn-primary" onclick="closeModal()" style="width:100%">知道了</button></div>\
+      </div></div>';
 }
 
 // ==================== EXPORT / IMPORT ====================
