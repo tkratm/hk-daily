@@ -394,6 +394,12 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 <div id="modalContainer"></div>
 
 <script>
+// 版本号——改代码后 +1，主屏幕图标自动刷新
+const APP_VER='1';
+(function(){
+  var v=localStorage.getItem('_app_ver');
+  if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
+})();
 // ==================== DATA ====================
 const K='hk_guide_data';
 
