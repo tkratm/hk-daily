@@ -11,256 +11,313 @@
 <title>港股投资打卡</title>
 <style>
 :root{
-  --bg:#f6f5f3; --card:#fff; --t:#1a1a1a; --t2:#777;
-  --red:#c41e3a; --rl:#fef0f2; --gn:#2e7d32; --gl:#e8f5e9;
-  --bl:#1565c0; --bll:#e3f2fd; --or:#e65100; --ol:#fff3e0;
-  --br:#e6e4e0; --sh:0 1px 3px rgba(0,0,0,.05); --r:12px;
+  --bg:#F2F2F7; --card:#FFFFFF; --t:#000000; --t2:#8E8E93; --t3:#C7C7CC;
+  --red:#FF3B30; --rl:#FFEEED; --gn:#34C759; --gl:#E8F8ED;
+  --bl:#007AFF; --bll:#EBF5FF; --or:#FF9500; --ol:#FFF3E0;
+  --br:#E5E5EA; --sh:0 1px 4px rgba(0,0,0,.06); --r:14px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:var(--bg);color:var(--t);line-height:1.6;font-size:15px;
-  -webkit-font-smoothing:antialiased;padding-bottom:68px;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;
+  background:var(--bg);color:var(--t);line-height:1.45;font-size:17px;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  padding-bottom:88px;
 }
+
+/* ── Header ── */
 .header{
-  position:sticky;top:0;z-index:100;background:var(--bg);
-  padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;background:rgba(242,242,247,0.88);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:12px 20px 10px;display:flex;align-items:center;justify-content:space-between;
 }
-.header h1{font-size:18px;font-weight:700}
+.header h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
 .header .streak{
   font-size:12px;color:var(--red);background:var(--rl);
-  padding:4px 12px;border-radius:20px;font-weight:600;
+  padding:5px 14px;border-radius:20px;font-weight:600;
   display:flex;align-items:center;gap:4px;
 }
-.tab-content{display:none;padding:0 16px}
+
+/* ── Tabs ── */
+.tab-content{display:none;padding:0 20px}
 .tab-content.active{display:block}
+
+/* ── Card ── */
 .card{
-  background:var(--card);border:1px solid var(--br);
-  border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--sh);
+  background:var(--card);border-radius:var(--r);
+  padding:20px;margin-bottom:12px;box-shadow:var(--sh);
 }
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:16px;font-weight:700}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-title{font-size:17px;font-weight:600;letter-spacing:-.2px}
 .card-sub{font-size:12px;color:var(--t2)}
 
+/* ── Stats Grid ── */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat-item{
-  background:var(--card);border:1px solid var(--br);
-  border-radius:var(--r);padding:14px;text-align:center;box-shadow:var(--sh);
+  background:var(--card);border-radius:var(--r);
+  padding:16px 12px;text-align:center;box-shadow:var(--sh);
 }
-.stat-item .v{font-size:22px;font-weight:700}
+.stat-item .v{font-size:30px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
 .stat-item .v.red{color:var(--red)}.stat-item .v.gn{color:var(--gn)}.stat-item .v.bl{color:var(--bl)}
-.stat-item .l{font-size:12px;color:var(--t2);margin-top:2px}
+.stat-item .l{font-size:13px;color:var(--t2);margin-top:4px;font-weight:500}
 .stat-item[onclick]{cursor:pointer;transition:transform .15s,box-shadow .15s}
-.stat-item[onclick]:active{transform:scale(.96);box-shadow:inset 0 0 0 1px var(--red)}
+.stat-item[onclick]:active{transform:scale(.965)}
 
+/* ── Check Item ── */
 .check-item{
-  display:flex;align-items:center;gap:12px;padding:12px 0;
-  border-bottom:1px solid #f0eeea;cursor:pointer;
+  display:flex;align-items:center;gap:12px;padding:14px 0;
+  border-bottom:0.5px solid var(--br);cursor:pointer;
   -webkit-tap-highlight-color:transparent;user-select:none;
   transition:background .1s;
 }
-.check-item:active{background:#f5f3f0}
+.check-item:active{background:rgba(0,0,0,.03)}
 .check-item:last-child{border-bottom:none}
 .check-item .box{
-  width:22px;height:22px;border:2px solid #ccc;border-radius:6px;
+  width:24px;height:24px;border:2px solid var(--t3);border-radius:7px;
   flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  transition:all .2s;font-size:12px;
+  transition:all .2s;font-size:13px;font-weight:700;
 }
-.check-item.done .box{background:var(--gn);border-color:var(--gn);color:#fff}
+.check-item.done .box{background:var(--bl);border-color:var(--bl);color:#fff}
 .check-item .info{flex:1;min-width:0}
-.check-item .info .name{font-size:14px;font-weight:600}
-.check-item .info .hint{font-size:12px;color:var(--t2);margin-top:2px}
-.check-item .time{font-size:11px;color:#bbb;white-space:nowrap}
+.check-item .info .name{font-size:15px;font-weight:600}
+.check-item .info .hint{font-size:13px;color:var(--t2);margin-top:2px}
+.check-item .time{font-size:12px;color:var(--t3);white-space:nowrap}
 
-.habit-group{margin-bottom:18px}
+/* ── Habit Group ── */
+.habit-group{margin-bottom:20px}
 .habit-group .group-title{
-  font-size:13px;font-weight:700;color:var(--t2);margin-bottom:8px;
-  display:flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px;
 }
-.habit-group .group-title .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.habit-group .group-title .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .dot-red{background:var(--red)}.dot-bl{background:var(--bl)}.dot-gn{background:var(--gn)}.dot-or{background:var(--or)}
 
-.journal-entry{padding:14px 0;border-bottom:1px solid #f0eeea}
+/* ── Journal ── */
+.journal-entry{padding:16px 0;border-bottom:0.5px solid var(--br)}
 .journal-entry:last-child{border-bottom:none}
-.journal-entry .j-date{font-size:12px;color:var(--t2);margin-bottom:8px}
+.journal-entry .j-date{font-size:13px;color:var(--t2);margin-bottom:8px;font-weight:500}
 .journal-entry .j-line{
-  font-size:14px;padding:4px 0 4px 8px;border-left:3px solid var(--rl);margin-bottom:6px;
+  font-size:15px;padding:3px 0 3px 10px;border-left:2.5px solid var(--bll);margin-bottom:4px;line-height:1.4;
 }
-.journal-entry .j-line .j-label{font-size:12px;color:var(--t2)}
-.empty-state{text-align:center;padding:40px 20px;color:var(--t2)}
-.empty-state .icon{font-size:40px;margin-bottom:12px}
+.journal-entry .j-line .j-label{font-size:13px;color:var(--t2)}
+.empty-state{text-align:center;padding:48px 20px;color:var(--t2)}
+.empty-state .icon{font-size:36px;margin-bottom:12px;opacity:.7}
 
+/* ── Buttons ── */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;
+  padding:11px 22px;border-radius:22px;font-size:15px;font-weight:600;
   border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  letter-spacing:-.15px;
 }
-.btn-primary{background:var(--red);color:#fff}
-.btn-primary:active{background:#a01830}
-.btn-outline{background:transparent;color:var(--red);border:1.5px solid var(--red)}
-.btn-outline:active{background:var(--rl)}
-.btn-sm{padding:6px 14px;font-size:12px;border-radius:6px}
+.btn-primary{background:var(--bl);color:#fff}
+.btn-primary:active{background:#0062CC}
+.btn-outline{background:rgba(0,122,255,.06);color:var(--bl);border:none}
+.btn-outline:active{background:rgba(0,122,255,.12)}
+.btn-sm{padding:7px 16px;font-size:13px;border-radius:20px}
 .btn-full{width:100%;justify-content:center}
 
+/* ── Modal ── */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;
+  position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;
   display:flex;align-items:flex-end;justify-content:center;
 }
 .modal{
-  background:var(--card);border-radius:16px 16px 0 0;width:100%;max-width:560px;
-  max-height:85vh;overflow-y:auto;padding:20px;
+  background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:560px;
+  max-height:82vh;overflow-y:auto;padding:12px 20px 24px;
 }
-.modal-title{font-size:17px;font-weight:700;margin-bottom:16px}
+.modal::before{
+  content:'';display:block;width:36px;height:5px;background:var(--t3);
+  border-radius:3px;margin:0 auto 14px;
+}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px;letter-spacing:-.25px}
 .modal textarea,.modal input{
-  width:100%;padding:10px 14px;border:1px solid var(--br);border-radius:8px;
-  font-size:14px;font-family:inherit;outline:none;background:#fafaf8;
+  width:100%;padding:12px 14px;border:1px solid var(--br);border-radius:10px;
+  font-size:15px;font-family:inherit;outline:none;background:var(--bg);
+  transition:border-color .15s;
 }
-.modal textarea:focus,.modal input:focus{border-color:var(--red)}
+.modal textarea:focus,.modal input:focus{border-color:var(--bl)}
 .modal textarea{min-height:60px}
-.modal .field{margin-bottom:14px}
-.modal .field label{font-size:13px;font-weight:600;color:var(--t2);display:block;margin-bottom:6px}
-.modal-btns{display:flex;gap:10px;margin-top:16px}
+.modal .field{margin-bottom:16px}
+.modal .field label{font-size:14px;font-weight:600;color:var(--t);display:block;margin-bottom:8px}
+.modal-btns{display:flex;gap:10px;margin-top:20px}
 .modal-btns .btn{flex:1}
 
+/* ── Rules ── */
 .rule-item{
-  display:flex;align-items:flex-start;gap:12px;padding:12px 0;
-  border-bottom:1px solid #f0eeea;
+  display:flex;align-items:flex-start;gap:14px;padding:14px 0;
+  border-bottom:0.5px solid var(--br);
 }
 .rule-item:last-child{border-bottom:none}
 .rule-num{
-  width:28px;height:28px;border-radius:50%;background:#f0eeea;
+  width:28px;height:28px;border-radius:50%;background:var(--bg);
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;flex-shrink:0;color:var(--t2);
+  font-size:13px;font-weight:700;flex-shrink:0;color:var(--t2);
 }
-.rule-text{font-size:14px;flex:1;line-height:1.5}
+.rule-text{font-size:15px;flex:1;line-height:1.4}
 .rule-item.violated .rule-num{background:var(--rl);color:var(--red)}
 .rule-item .violate-btn{
-  font-size:11px;color:var(--t2);white-space:nowrap;padding:4px 10px;
-  border:1px solid var(--br);border-radius:20px;cursor:pointer;background:none;
-  -webkit-tap-highlight-color:transparent;
+  font-size:11px;color:var(--t2);white-space:nowrap;padding:5px 12px;
+  border:0.5px solid var(--br);border-radius:20px;cursor:pointer;background:none;
+  -webkit-tap-highlight-color:transparent;font-weight:500;
 }
 
+/* ── Bottom Nav ── */
 .bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;background:var(--card);
-  border-top:1px solid var(--br);display:flex;z-index:150;
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(249,249,249,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:0.5px solid rgba(0,0,0,.08);
+  display:flex;z-index:150;
+  padding-bottom:env(safe-area-inset-bottom, 0);
 }
 .nav-item{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:8px 0 6px;cursor:pointer;color:#bbb;font-size:10px;
-  -webkit-tap-highlight-color:transparent;transition:color .15s;gap:3px;
+  padding:6px 0 4px;cursor:pointer;color:var(--t3);font-size:10px;font-weight:500;
+  -webkit-tap-highlight-color:transparent;transition:color .15s;gap:2px;
+  letter-spacing:.2px;
 }
-.nav-item .nicon{font-size:20px;line-height:1}
-.nav-item.active{color:var(--red);font-weight:600}
+.nav-item .nicon{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.nav-item.active{color:var(--bl);font-weight:600}
 
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600}
+/* ── Tags ── */
+.tag{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600}
 .tag-red{background:var(--rl);color:var(--red)}
 .tag-gn{background:var(--gl);color:var(--gn)}
 .tag-bl{background:var(--bll);color:var(--bl)}
 .tag-or{background:var(--ol);color:var(--or)}
 
+/* ── Toast ── */
 .toast{
-  position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:300;
-  background:#1a1a1a;color:#fff;padding:10px 24px;border-radius:20px;
-  font-size:13px;pointer-events:none;opacity:0;transition:opacity .3s;
+  position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:300;
+  background:rgba(0,0,0,.82);color:#fff;padding:12px 24px;border-radius:22px;
+  font-size:13px;pointer-events:none;opacity:0;transition:opacity .25s;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
 .toast.show{opacity:1}
 
+/* ── Timeline ── */
 .timeline-item{
-  position:relative;padding-left:28px;padding-bottom:16px;
+  position:relative;padding-left:30px;padding-bottom:18px;
 }
 .timeline-item::before{
-  content:'';position:absolute;left:8px;top:6px;width:10px;height:10px;border-radius:50%;
-  border:2px solid var(--br);background:var(--bg);
+  content:'';position:absolute;left:8px;top:4px;width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--t3);background:var(--bg);
 }
 .timeline-item::after{
-  content:'';position:absolute;left:12px;top:18px;bottom:0;width:1px;background:var(--br);
+  content:'';position:absolute;left:13px;top:18px;bottom:0;width:1px;background:var(--br);
 }
 .timeline-item:last-child::after{display:none}
 .timeline-item.done::before{background:var(--gn);border-color:var(--gn)}
-.timeline-item.active::before{background:var(--red);border-color:var(--red)}
-.timeline-item .tl-date{font-size:11px;color:var(--t2);margin-bottom:2px}
-.timeline-item .tl-title{font-size:14px;font-weight:600}
-.timeline-item .tl-desc{font-size:12px;color:var(--t2);margin-top:2px}
+.timeline-item.active::before{background:var(--bl);border-color:var(--bl)}
+.timeline-item .tl-date{font-size:12px;color:var(--t2);margin-bottom:2px}
+.timeline-item .tl-title{font-size:15px;font-weight:600}
+.timeline-item .tl-desc{font-size:13px;color:var(--t2);margin-top:2px;line-height:1.3}
 
-.progress-bar{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin:8px 0}
+/* ── Progress ── */
+.progress-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin:8px 0}
 .progress-bar .fill{height:100%;border-radius:3px;transition:width .4s}
 .fill-red{background:var(--red)}.fill-gn{background:var(--gn)}.fill-bl{background:var(--bl)}
 
+/* ── Del ── */
 .del-btn{
-  background:none;border:none;color:#bbb;font-size:16px;cursor:pointer;
+  background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;
   padding:0 4px;-webkit-tap-highlight-color:transparent;
 }
 body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
-.journal-tabs{display:flex;gap:4px;margin-bottom:14px;background:#f0eeea;border-radius:8px;padding:3px}
+/* ── Journal Tabs ── */
+.journal-tabs{
+  display:flex;gap:2px;margin-bottom:14px;background:rgba(118,118,128,.12);
+  border-radius:10px;padding:2px;
+}
 .journal-tabs .jt{
-  flex:1;text-align:center;padding:8px 0;border-radius:6px;font-size:12px;font-weight:600;
-  cursor:pointer;color:var(--t2);-webkit-tap-highlight-color:transparent;transition:all .15s;
+  flex:1;text-align:center;padding:7px 0;border-radius:8px;font-size:12px;font-weight:600;
+  cursor:pointer;color:var(--t2);-webkit-tap-highlight-color:transparent;transition:all .2s;
 }
-.journal-tabs .jt.active{background:var(--card);color:var(--t);box-shadow:var(--sh)}
+.journal-tabs .jt.active{background:var(--card);color:var(--t);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
-.sim-counter{
-  display:flex;align-items:center;gap:10px;margin-top:6px;
-}
+/* ── Sim Counter ── */
+.sim-counter{display:flex;align-items:center;gap:12px;margin-top:6px}
 .sim-counter .sc-btn{
-  width:32px;height:32px;border-radius:50%;border:1.5px solid var(--br);
-  background:var(--card);font-size:18px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--t);
+  width:36px;height:36px;border-radius:50%;border:1px solid var(--t3);
+  background:var(--card);font-size:20px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--bl);font-weight:500;
   transition:all .15s;
 }
-.sim-counter .sc-btn:active{background:#f0eeea;border-color:var(--t2)}
-.sim-counter .sc-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
-.sim-counter .sc-num{font-size:20px;font-weight:700;min-width:40px;text-align:center}
-.sim-counter .sc-target{font-size:12px;color:var(--t2)}
+.sim-counter .sc-btn:active{background:var(--bll)}
+.sim-counter .sc-btn:disabled{opacity:.25;cursor:not-allowed;pointer-events:none}
+.sim-counter .sc-num{font-size:24px;font-weight:700;min-width:44px;text-align:center}
+.sim-counter .sc-target{font-size:13px;color:var(--t2);font-weight:500}
 
-.export-bar{
-  display:flex;gap:8px;margin-bottom:14px;
-}
-.export-bar .btn{flex:1;font-size:12px;padding:8px 0}
+/* ── Export Bar ── */
+.export-bar{display:flex;gap:8px;margin-bottom:14px}
+.export-bar .btn{flex:1;font-size:13px;padding:9px 0}
 
+/* ── Habit Detail ── */
 .habit-detail{
-  background:#fafaf8;border:1px solid #f0eeea;border-radius:8px;
-  padding:10px 12px;margin:-6px 0 12px 34px;
-  font-size:12px;line-height:1.7;color:var(--t2);
+  background:var(--bg);border-radius:10px;
+  padding:12px 14px;margin:-4px 0 12px 36px;
+  font-size:13px;line-height:1.65;color:var(--t2);
 }
 .habit-detail .hd-line{padding:1px 0}
 .habit-detail .hd-tools{
-  margin-top:6px;padding-top:6px;border-top:1px dashed #e6e4e0;
-  color:var(--bl);font-size:11px;
+  margin-top:8px;padding-top:8px;border-top:0.5px solid var(--br);
+  color:var(--bl);font-size:12px;
 }
 .habit-detail .hd-warn{color:var(--red);font-weight:600;padding:1px 0}
 
+/* ── Info Button ── */
 .info-btn{
-  background:none;border:none;color:#ccc;font-size:16px;
-  width:26px;height:26px;cursor:pointer;border-radius:50%;
+  background:none;border:none;color:var(--t3);font-size:20px;font-weight:300;
+  width:28px;height:28px;cursor:pointer;border-radius:50%;
   -webkit-tap-highlight-color:transparent;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
 }
-.info-btn:active{background:#f0eeea;color:var(--red)}
+.info-btn:active{background:var(--bg);color:var(--bl)}
 
+/* ── History ── */
 .history-item{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 0;border-bottom:1px solid #f0eeea;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 0;border-bottom:0.5px solid var(--br);
 }
 .history-item:last-child{border-bottom:none}
-.history-item .h-left{flex-shrink:0;text-align:center;min-width:62px}
-.history-item .h-date{font-size:13px;font-weight:600}
-.history-item .h-day{font-size:11px;color:var(--t2);margin-top:2px}
-.history-item .h-dots{display:flex;gap:3px;flex:1;justify-content:center}
+.history-item .h-left{flex-shrink:0;text-align:center;min-width:64px}
+.history-item .h-date{font-size:14px;font-weight:600}
+.history-item .h-day{font-size:12px;color:var(--t2);margin-top:2px}
+.history-item .h-dots{display:flex;gap:4px;flex:1;justify-content:center}
 .history-item .h-dot{
-  width:18px;height:18px;border-radius:50%;
-  background:#f0eeea;color:#ccc;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg);color:var(--t3);
   display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:700;
+  font-size:11px;font-weight:700;
 }
-.history-item .h-dot.done{background:var(--gn);color:#fff}
+.history-item .h-dot.done{background:var(--bl);color:#fff}
 .history-item .h-right{flex-shrink:0}
+
+/* ── Discipline rhythm ── */
+.rhythm-row{
+  display:flex;align-items:flex-start;gap:12px;padding:10px 0;
+  border-bottom:0.5px solid var(--br);
+}
+.rhythm-row:last-child{border-bottom:none}
+.rhythm-time{
+  padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;
+  white-space:nowrap;flex-shrink:0;letter-spacing:.2px;
+}
+.rhythm-time.red{background:var(--rl);color:var(--red)}
+.rhythm-time.or{background:var(--ol);color:var(--or)}
+.rhythm-time.bl{background:var(--bll);color:var(--bl)}
+.rhythm-time.gn{background:var(--gl);color:var(--gn)}
+.rhythm-time.def{background:var(--bg);color:var(--t);border:0.5px solid var(--br)}
+.rhythm-body{font-size:14px;line-height:1.55;color:var(--t)}
+.rhythm-body .rhythm-warn{color:var(--red);font-weight:600;font-size:12px}
+.rhythm-body .rhythm-sep{color:var(--t3);margin:0 4px}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>📈 港股投资打卡</h1>
+  <h1>港股投资打卡</h1>
   <div class="streak" id="streakBadge">🔥 <span id="streakCount">0</span> 天</div>
 </div>
 
@@ -274,18 +331,18 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
   </div>
 
   <div class="card">
-    <div class="card-header"><div class="card-title">📋 今天待办</div><span class="tag tag-bl" id="todayDate"></span></div>
+    <div class="card-header"><div class="card-title">今天待办</div><span class="tag tag-bl" id="todayDate"></span></div>
     <div id="todayChecklist"></div>
   </div>
 
   <div class="card">
-    <div class="card-header"><div class="card-title">🗺 执行路线图</div></div>
+    <div class="card-header"><div class="card-title">执行路线图</div></div>
     <div id="timelineEl"></div>
   </div>
 
   <div class="export-bar">
-    <button class="btn btn-outline" onclick="exportData()" style="font-size:12px;padding:8px 0">📤 导出备份</button>
-    <button class="btn btn-outline" onclick="document.getElementById('importFile').click()" style="font-size:12px;padding:8px 0">📥 恢复备份</button>
+    <button class="btn btn-outline" onclick="exportData()" style="font-size:13px;padding:9px 0">导出备份</button>
+    <button class="btn btn-outline" onclick="document.getElementById('importFile').click()" style="font-size:13px;padding:9px 0">恢复备份</button>
     <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(this)">
   </div>
   <div style="text-align:center;margin-bottom:10px">
@@ -296,7 +353,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 <!-- ===== CHECKIN ===== -->
 <div class="tab-content" id="tab-checkin">
   <div class="card">
-    <div class="card-header"><div class="card-title">📚 学习清单</div><span class="tag tag-bl" id="learningPct">0/14</span></div>
+    <div class="card-header"><div class="card-title">学习清单</div><span class="tag tag-bl" id="learningPct">0/14</span></div>
     <div class="habit-group">
       <div class="group-title"><span class="dot dot-red"></span>必读书（4本）</div>
       <div id="checklistBooks"></div>
@@ -316,12 +373,12 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
   </div>
 
   <div class="card">
-    <div class="card-header"><div class="card-title">⚡ 每日习惯</div><span class="card-sub" id="habitDate"></span></div>
+    <div class="card-header"><div class="card-title">每日习惯</div><span class="card-sub" id="habitDate"></span></div>
     <div id="dailyHabits"></div>
   </div>
 
   <div class="card">
-    <div class="card-header"><div class="card-title">📆 定期任务</div></div>
+    <div class="card-header"><div class="card-title">定期任务</div></div>
     <div id="periodicTasks"></div>
   </div>
 </div>
@@ -329,65 +386,65 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 <!-- ===== JOURNAL ===== -->
 <div class="tab-content" id="tab-journal">
   <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
-    <button class="btn btn-primary btn-sm" onclick="openJournalModal()">✏️ 写日志</button>
-    <button class="btn btn-outline btn-sm" onclick="openWeeklyModal()">📈 周复盘</button>
-    <button class="btn btn-outline btn-sm" onclick="openMonthlyModal()">💰 月检视</button>
+    <button class="btn btn-primary btn-sm" onclick="openJournalModal()">写日志</button>
+    <button class="btn btn-outline btn-sm" onclick="openWeeklyModal()">周复盘</button>
+    <button class="btn btn-outline btn-sm" onclick="openMonthlyModal()">月检视</button>
   </div>
   <div class="journal-tabs">
-    <div class="jt active" onclick="switchJournalTab('daily')">📝 日志</div>
-    <div class="jt" onclick="switchJournalTab('weekly')">📈 周复盘</div>
-    <div class="jt" onclick="switchJournalTab('monthly')">💰 月检视</div>
-    <div class="jt" onclick="switchJournalTab('history')">📊 打卡历史</div>
+    <div class="jt active" onclick="switchJournalTab('daily')">日志</div>
+    <div class="jt" onclick="switchJournalTab('weekly')">周复盘</div>
+    <div class="jt" onclick="switchJournalTab('monthly')">月检视</div>
+    <div class="jt" onclick="switchJournalTab('history')">打卡历史</div>
   </div>
-  <div id="journalList"><div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志</p></div></div>
-  <div id="weeklyList" style="display:none"><div class="empty-state"><div class="icon">📈</div><p>还没写过周复盘</p></div></div>
-  <div id="monthlyList" style="display:none"><div class="empty-state"><div class="icon">💰</div><p>还没写过月检视</p></div></div>
-  <div id="historyList" style="display:none"><div class="empty-state"><div class="icon">📊</div><p>还没打过卡</p><p style="font-size:12px;margin-top:8px">开始打卡后这里会显示每日习惯完成情况</p></div></div>
+  <div id="journalList"><div class="empty-state"><div class="icon">—</div><p>还没写过投资日志</p></div></div>
+  <div id="weeklyList" style="display:none"><div class="empty-state"><div class="icon">—</div><p>还没写过周复盘</p></div></div>
+  <div id="monthlyList" style="display:none"><div class="empty-state"><div class="icon">—</div><p>还没写过月检视</p></div></div>
+  <div id="historyList" style="display:none"><div class="empty-state"><div class="icon">—</div><p>还没打过卡</p><p style="font-size:12px;margin-top:8px">开始打卡后这里会显示每日习惯完成情况</p></div></div>
 </div>
 
 <!-- ===== DISCIPLINE ===== -->
 <div class="tab-content" id="tab-discipline">
   <div class="card">
-    <div class="card-header"><div class="card-title">📱 每日操作节奏</div></div>
+    <div class="card-header"><div class="card-title">每日操作节奏</div></div>
     <div style="font-size:13px;line-height:1.8">
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0eeea">
-        <div style="background:var(--rl);color:var(--red);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">8:00</div>
-        <div><b>华尔街见闻</b> → 财经早餐头条 · 隔夜美股<span style="margin:0 4px;color:var(--t2)">|</span> <b>富途牛牛</b> → 港股夜盘/ADR · 港交所公告</div>
+      <div class="rhythm-row">
+        <div class="rhythm-time red">8:00</div>
+        <div class="rhythm-body"><b>华尔街见闻</b> → 财经早餐头条 · 隔夜美股<span class="rhythm-sep">|</span><b>富途牛牛</b> → 港股夜盘/ADR · 港交所公告</div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0eeea">
-        <div style="background:var(--ol);color:var(--or);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">9:30-10:30</div>
-        <div><b>富途牛牛</b> → 集合竞价 · 资金流向 · 持仓表现<span style="margin:0 4px;color:var(--t2)">|</span> <b>雪球</b> → 自选股排序<br><span style="color:var(--red);font-weight:600;font-size:12px">⚠ 铁律：不下单</span></div>
+      <div class="rhythm-row">
+        <div class="rhythm-time or">9:30–10:30</div>
+        <div class="rhythm-body"><b>富途牛牛</b> → 集合竞价 · 资金流向 · 持仓表现<span class="rhythm-sep">|</span><b>雪球</b> → 自选股排序<br><span class="rhythm-warn">⚠ 铁律：不下单</span></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0eeea">
-        <div style="background:var(--bll);color:var(--bl);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">12:00</div>
-        <div><b>富途牛牛</b> → 上午走势 · 指数涨跌 · 突发新闻</div>
+      <div class="rhythm-row">
+        <div class="rhythm-time bl">12:00</div>
+        <div class="rhythm-body"><b>富途牛牛</b> → 上午走势 · 指数涨跌 · 突发新闻</div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0eeea">
-        <div style="background:var(--gl);color:var(--gn);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">16:10</div>
-        <div>回到打卡网页 → 写三句话日记（不开 app）</div>
+      <div class="rhythm-row">
+        <div class="rhythm-time gn">16:10</div>
+        <div class="rhythm-body">回到打卡网页 → 写三句话日记（不开 app）</div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0">
-        <div style="background:var(--card);border:1px solid var(--br);color:var(--t);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">晚上</div>
-        <div><b>富途牛牛</b> → 持仓股季报/年报<span style="margin:0 4px;color:var(--t2)">|</span> <b>雪球</b> → 深度分析帖 · 验证判断</div>
+      <div class="rhythm-row">
+        <div class="rhythm-time def">晚上</div>
+        <div class="rhythm-body"><b>富途牛牛</b> → 持仓股季报/年报<span class="rhythm-sep">|</span><b>雪球</b> → 深度分析帖 · 验证判断</div>
       </div>
     </div>
   </div>
   <div class="card">
-    <div class="card-header"><div class="card-title">📜 投资纪律手册</div><span class="tag tag-gn" id="disciplineStatus">守纪中</span></div>
+    <div class="card-header"><div class="card-title">投资纪律手册</div><span class="tag tag-gn" id="disciplineStatus">守纪中</span></div>
     <div id="disciplineRules"></div>
   </div>
   <div class="card">
-    <div class="card-header"><div class="card-title">🚫 不买清单</div></div>
+    <div class="card-header"><div class="card-title">不买清单</div></div>
     <div id="dontBuyList"></div>
   </div>
 </div>
 
 <!-- ===== BOTTOM NAV ===== -->
 <div class="bottom-nav">
-  <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="nicon">📊</span>仪表盘</div>
-  <div class="nav-item" data-tab="checkin" onclick="switchTab('checkin')"><span class="nicon">✅</span>打卡</div>
-  <div class="nav-item" data-tab="journal" onclick="switchTab('journal')"><span class="nicon">📝</span>日志</div>
-  <div class="nav-item" data-tab="discipline" onclick="switchTab('discipline')"><span class="nicon">🛡</span>纪律</div>
+  <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="nicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>仪表盘</div>
+  <div class="nav-item" data-tab="checkin" onclick="switchTab('checkin')"><span class="nicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="7.5 12 10.5 15 16.5 9"/></svg></span>打卡</div>
+  <div class="nav-item" data-tab="journal" onclick="switchTab('journal')"><span class="nicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><line x1="15" y1="5" x2="19" y2="9"/></svg></span>日志</div>
+  <div class="nav-item" data-tab="discipline" onclick="switchTab('discipline')"><span class="nicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>纪律</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -395,7 +452,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='1';
+const APP_VER='2';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -596,7 +653,7 @@ function R_dashboard(){
       else C_habit(x.id);
     };
     var info=HABIT_INFO[x.id];
-    div.innerHTML='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+info.icon+' '+info.title+'</div><div class="hint">⏱ '+info.duration+'</div></div>';
+    div.innerHTML='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+info.title+'</div><div class="hint">'+info.duration+'</div></div>';
     div.innerHTML+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+x.id+'\')">ⓘ</button>';
     h.appendChild(div);
   });
@@ -719,8 +776,8 @@ function R_checkin(){
     var done=!!hd[id]||(id==='h4'&&jDone);
     html+='<div class="check-item'+(done?' done':'')+'" onclick="C_habit(\''+id+'\')">';
     html+='<div class="box">'+(done?'✓':'')+'</div>';
-    html+='<div class="info"><div class="name">'+info.icon+' '+info.title+'</div>';
-    html+='<div class="hint">⏱ '+info.duration+'</div></div>';
+    html+='<div class="info"><div class="name">'+info.title+'</div>';
+    html+='<div class="hint">'+info.duration+'</div></div>';
     html+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+id+'\')">ⓘ</button>';
     html+='</div>';
     // Detail block under each habit
@@ -728,7 +785,7 @@ function R_checkin(){
     info.lines.forEach(function(line){
       if(line==='') html+='<div style="height:4px"></div>';
       else if(line.indexOf('⚠')===0) html+='<div class="hd-warn">'+escHtml(line)+'</div>';
-      else if(line.indexOf('工具')===0) html+='<div class="hd-tools">🔧 '+escHtml(line.substring(3))+'</div>';
+      else if(line.indexOf('工具')===0) html+='<div class="hd-tools">'+escHtml(line)+'</div>';
       else html+='<div class="hd-line">'+escHtml(line)+'</div>';
     });
     html+='</div>';
@@ -739,9 +796,9 @@ function R_checkin(){
   var pt=document.getElementById('periodicTasks'),wk=thisWeek(),mw=thisMonth(),pd=d._periodic||{};
   var wDone=!!pd['w_'+wk],mDone=!!pd['m_'+mw];
   pt.innerHTML='<div class="check-item'+(wDone?' done':'')+'" onclick="C_periodic(\'week\')">';
-  pt.innerHTML+='<div class="box">'+(wDone?'✓':'')+'</div><div class="info"><div class="name">📈 每周复盘（周日20:00）</div><div class="hint">本周操作复盘+估值更新+下周计划</div></div></div>';
+  pt.innerHTML+='<div class="box">'+(wDone?'✓':'')+'</div><div class="info"><div class="name">每周复盘（周日20:00）</div><div class="hint">本周操作复盘+估值更新+下周计划</div></div></div>';
   pt.innerHTML+='<div class="check-item'+(mDone?' done':'')+'" onclick="C_periodic(\'month\')">';
-  pt.innerHTML+='<div class="box">'+(mDone?'✓':'')+'</div><div class="info"><div class="name">💰 月度检视</div><div class="hint">净值记录+再平衡+情绪检查</div></div></div>';
+  pt.innerHTML+='<div class="box">'+(mDone?'✓':'')+'</div><div class="info"><div class="name">月度检视</div><div class="hint">净值记录+再平衡+情绪检查</div></div></div>';
 }
 
 // ==================== JOURNAL ====================
@@ -756,7 +813,7 @@ function R_journal(){
     var html='';
     d.journal.slice().reverse().forEach(function(e){
       html+='<div class="journal-entry">';
-      html+='<div class="j-date">'+fmt(e.date)+' <button class="del-btn" onclick="delJournal(\''+e.date+'\')" style="float:right;font-size:12px">🗑</button></div>';
+      html+='<div class="j-date">'+fmt(e.date)+' <button class="del-btn" onclick="delJournal(\''+e.date+'\')" style="float:right;font-size:12px">删除</button></div>';
       if(e.line1) html+='<div class="j-line"><span class="j-label">冲动：</span><span>'+escHtml(e.line1)+'</span></div>';
       if(e.line2) html+='<div class="j-line"><span class="j-label">持仓：</span><span>'+escHtml(e.line2)+'</span></div>';
       if(e.line3) html+='<div class="j-line"><span class="j-label">学到：</span><span>'+escHtml(e.line3)+'</span></div>';
@@ -772,7 +829,7 @@ function R_journal(){
     var html='';
     d.weekly.slice().reverse().forEach(function(e){
       html+='<div class="journal-entry">';
-      html+='<div class="j-date">📅 周：'+fmt(e.week)+' <button class="del-btn" onclick="delPeriodic(\'weekly\',\''+e.week+'\')" style="float:right;font-size:12px">🗑</button></div>';
+      html+='<div class="j-date">周：'+fmt(e.week)+' <button class="del-btn" onclick="delPeriodic(\'weekly\',\''+e.week+'\')" style="float:right;font-size:12px">删除</button></div>';
       if(e.review) html+='<div class="j-line"><span>'+escHtml(e.review)+'</span></div>';
       if(e.valuation) html+='<div class="j-line"><span class="j-label">估值：</span><span>'+escHtml(e.valuation)+'</span></div>';
       if(e.nextWeek) html+='<div class="j-line"><span class="j-label">下周：</span><span>'+escHtml(e.nextWeek)+'</span></div>';
@@ -788,7 +845,7 @@ function R_journal(){
     var html='';
     d.monthly.slice().reverse().forEach(function(e){
       html+='<div class="journal-entry">';
-      html+='<div class="j-date">📅 '+e.month+' <button class="del-btn" onclick="delPeriodic(\'monthly\',\''+e.month+'\')" style="float:right;font-size:12px">🗑</button></div>';
+      html+='<div class="j-date">'+e.month+' <button class="del-btn" onclick="delPeriodic(\'monthly\',\''+e.month+'\')" style="float:right;font-size:12px">删除</button></div>';
       if(e.net) html+='<div class="j-line"><span class="j-label">净值：</span><span>'+escHtml(e.net)+'</span></div>';
       if(e.balance) html+='<div class="j-line"><span class="j-label">再平衡：</span><span>'+escHtml(e.balance)+'</span></div>';
       if(e.emotion) html+='<div class="j-line"><span class="j-label">情绪：</span><span>'+escHtml(e.emotion)+'</span></div>';
@@ -866,7 +923,7 @@ function openJournalModal(){
   document.getElementById('modalContainer').innerHTML='\
     <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
       <div class="modal">\
-        <div class="modal-title">✏️ 投资日志 — '+fmt(td)+'</div>\
+        <div class="modal-title">投资日志 — '+fmt(td)+'</div>\
         <div class="field"><label>1. 今天我有什么冲动没执行？为什么？</label><textarea id="j1" rows="2">'+escHtml(ex.line1||'')+'</textarea></div>\
         <div class="field"><label>2. 持仓中有哪只值得关注的变化？</label><textarea id="j2" rows="2">'+escHtml(ex.line2||'')+'</textarea></div>\
         <div class="field"><label>3. 今天我学到的一个知识点</label><textarea id="j3" rows="2">'+escHtml(ex.line3||'')+'</textarea></div>\
@@ -891,7 +948,7 @@ function openWeeklyModal(){
   document.getElementById('modalContainer').innerHTML='\
     <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
       <div class="modal">\
-        <div class="modal-title">📈 周复盘 — '+fmt(wk)+'</div>\
+        <div class="modal-title">周复盘 — '+fmt(wk)+'</div>\
         <div class="field"><label>本周操作复盘（做对/做错/原因）</label><textarea id="w1" rows="3">'+escHtml(ex.review||'')+'</textarea></div>\
         <div class="field"><label>持仓估值更新（PE/PB/股息率变化）</label><textarea id="w2" rows="3">'+escHtml(ex.valuation||'')+'</textarea></div>\
         <div class="field"><label>下周关注事件</label><textarea id="w3" rows="2">'+escHtml(ex.nextWeek||'')+'</textarea></div>\
@@ -917,7 +974,7 @@ function openMonthlyModal(){
   document.getElementById('modalContainer').innerHTML='\
     <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
       <div class="modal">\
-        <div class="modal-title">💰 月检视 — '+mo+'</div>\
+        <div class="modal-title">月检视 — '+mo+'</div>\
         <div class="field"><label>本月净值变化（对比上月）</label><input id="m1" placeholder="净值 +X% 或 -X%" value="'+escAttr(ex.net||'')+'"></div>\
         <div class="field"><label>持仓是否需要再平衡？</label><textarea id="m2" rows="2">'+escHtml(ex.balance||'')+'</textarea></div>\
         <div class="field"><label>我的情绪状态：贪婪 / 恐惧 / 平静？</label><textarea id="m3" rows="2">'+escHtml(ex.emotion||'')+'</textarea></div>\
@@ -996,15 +1053,15 @@ function openHabitDetail(id){
   info.lines.forEach(function(line){
     if(line==='') lines+='<div style="height:6px"></div>';
     else if(line.indexOf('⚠')===0) lines+='<div class="hd-warn" style="padding:2px 0">'+escHtml(line)+'</div>';
-    else if(line.indexOf('工具')===0) lines+='<div style="margin-top:8px;padding-top:6px;border-top:1px dashed #e6e4e0;color:var(--bl);font-size:11px">🔧 '+escHtml(line.substring(3))+'</div>';
+    else if(line.indexOf('工具')===0) lines+='<div style="margin-top:8px;padding-top:8px;border-top:0.5px solid var(--br);color:var(--bl);font-size:12px">'+escHtml(line)+'</div>';
     else lines+='<div style="padding:2px 0">'+escHtml(line)+'</div>';
   });
   openModal();
   document.getElementById('modalContainer').innerHTML='\
     <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
       <div class="modal">\
-        <div class="modal-title">'+info.icon+' '+info.title+'</div>\
-        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">⏱ '+info.duration+'</div>\
+        <div class="modal-title">'+info.title+'</div>\
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">'+info.duration+'</div>\
         <div style="background:#fafaf8;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.7">'+lines+'</div>\
         <div class="modal-btns"><button class="btn btn-primary" onclick="closeModal()" style="width:100%">知道了</button></div>\
       </div></div>';
