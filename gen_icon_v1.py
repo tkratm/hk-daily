@@ -49,7 +49,7 @@ font = load_font(280)
 bbox = font.getbbox("港")
 tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
 x = (SIZE - tw) // 2
-y = (SIZE - th) // 2 - 20
+y = (SIZE - th) // 2
 draw.text((x, y), "港", font=font, fill=(255, 255, 255))
 
 path = os.path.join(OUT, "01-sunrise.png")
