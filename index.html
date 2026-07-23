@@ -454,7 +454,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='3';
+const APP_VER='4';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -656,7 +656,7 @@ function R_dashboard(){
     };
     var info=HABIT_INFO[x.id];
     div.innerHTML='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+info.title+'</div><div class="hint">'+info.duration+'</div></div>';
-    div.innerHTML+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+x.id+'\')">ⓘ</button>';
+    div.innerHTML+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+x.id+'\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>';
     h.appendChild(div);
   });
 
@@ -780,7 +780,7 @@ function R_checkin(){
     html+='<div class="box">'+(done?'✓':'')+'</div>';
     html+='<div class="info"><div class="name">'+info.title+'</div>';
     html+='<div class="hint">'+info.duration+'</div></div>';
-    html+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+id+'\')">ⓘ</button>';
+    html+='<button class="info-btn" onclick="event.stopPropagation();openHabitDetail(\''+id+'\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>';
     html+='</div>';
     // Detail block under each habit
     html+='<div class="habit-detail">';
@@ -1094,7 +1094,6 @@ function importData(input){
 function resetAll(){
   if(!confirm('⚠ 确定要删除所有数据吗？建议先导出备份。')) return;
   if(!confirm('再次确认：所有学习进度、打卡记录、日志将永久丢失。')) return;
-  S(def());
   localStorage.removeItem(K);
   location.reload();
 }
