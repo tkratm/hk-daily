@@ -5,163 +5,117 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>港股投资打卡 · 辛先生</title>
+<title>港股投资打卡</title>
 <style>
 :root{
-  --bg:#f6f5f3; --card:#fff; --text:#1a1a1a; --text2:#777;
-  --accent:#c41e3a; --accent-l:#fef0f2; --green:#2e7d32; --green-l:#e8f5e9;
-  --blue:#1565c0; --blue-l:#e3f2fd; --orange:#e65100; --orange-l:#fff3e0;
-  --border:#e6e4e0; --shadow:0 1px 3px rgba(0,0,0,.05);
-  --radius:12px; --safe-b:env(safe-area-inset-bottom,16px);
+  --bg:#f6f5f3; --card:#fff; --t:#1a1a1a; --t2:#777;
+  --red:#c41e3a; --rl:#fef0f2; --gn:#2e7d32; --gl:#e8f5e9;
+  --bl:#1565c0; --bll:#e3f2fd; --or:#e65100; --ol:#fff3e0;
+  --br:#e6e4e0; --sh:0 1px 3px rgba(0,0,0,.05); --r:12px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:var(--bg); color:var(--text); line-height:1.6; font-size:15px;
-  -webkit-font-smoothing:antialiased; padding-bottom:calc(68px + var(--safe-b));
-  max-width:560px; margin:0 auto; min-height:100vh;
+  background:var(--bg);color:var(--t);line-height:1.6;font-size:15px;
+  -webkit-font-smoothing:antialiased;padding-bottom:68px;
 }
 .header{
-  position:sticky; top:0; z-index:100; background:var(--bg);
-  padding:16px 16px 8px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky;top:0;z-index:100;background:var(--bg);
+  padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between;
 }
 .header h1{font-size:18px;font-weight:700}
 .header .streak{
-  font-size:12px;color:var(--accent);background:var(--accent-l);
+  font-size:12px;color:var(--red);background:var(--rl);
   padding:4px 12px;border-radius:20px;font-weight:600;
   display:flex;align-items:center;gap:4px;
 }
-.header-right{display:flex;align-items:center;gap:6px}
-.sync-badge{
-  font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600;
-  display:inline-flex;align-items:center;gap:3px;cursor:pointer;
-}
-.sync-badge.online{background:var(--green-l);color:var(--green)}
-.sync-badge.offline{background:#fff3e0;color:var(--orange)}
-.sync-badge.error{background:var(--accent-l);color:var(--accent)}
-.settings-btn{
-  font-size:16px;padding:3px 8px;cursor:pointer;background:none;border:none;
-  border-radius:6px;-webkit-tap-highlight-color:transparent;
-}
-.settings-btn:active{background:#f0eeea}
-.sync-banner{
-  display:flex;align-items:center;gap:10px;
-  background:#fff8e1;border:1px solid #ffcc02;border-radius:10px;
-  padding:12px 16px;margin-bottom:14px;cursor:pointer;
-  font-size:14px;font-weight:600;color:#b45309;
-  -webkit-tap-highlight-color:transparent;
-}
-.sync-banner:active{background:#fff3cd}
-.sync-banner .banner-emoji{font-size:20px}
-.sync-banner .banner-txt{flex:1}
-.sync-banner .banner-arrow{color:#b4530966;font-size:16px}
-
 .tab-content{display:none;padding:0 16px}
 .tab-content.active{display:block}
 .card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow);
+  background:var(--card);border:1px solid var(--br);
+  border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--sh);
 }
-.card-sm{padding:14px 16px;margin-bottom:10px}
-.card-header{
-  display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
-}
-.card-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
-.card-sub{font-size:12px;color:var(--text2)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:16px;font-weight:700}
+.card-sub{font-size:12px;color:var(--t2)}
 
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat-item{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:14px;text-align:center;box-shadow:var(--shadow);
+  background:var(--card);border:1px solid var(--br);
+  border-radius:var(--r);padding:14px;text-align:center;box-shadow:var(--sh);
 }
 .stat-item .v{font-size:22px;font-weight:700}
-.stat-item .v.red{color:var(--accent)}.stat-item .v.green{color:var(--green)}.stat-item .v.blue{color:var(--blue)}
-.stat-item .l{font-size:12px;color:var(--text2);margin-top:2px}
+.stat-item .v.red{color:var(--red)}.stat-item .v.gn{color:var(--gn)}.stat-item .v.bl{color:var(--bl)}
+.stat-item .l{font-size:12px;color:var(--t2);margin-top:2px}
 
 .check-item{
   display:flex;align-items:center;gap:12px;padding:12px 0;
   border-bottom:1px solid #f0eeea;cursor:pointer;
-  -webkit-tap-highlight-color:transparent; user-select:none;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  transition:background .1s;
 }
+.check-item:active{background:#f5f3f0}
 .check-item:last-child{border-bottom:none}
 .check-item .box{
   width:22px;height:22px;border:2px solid #ccc;border-radius:6px;
   flex-shrink:0;display:flex;align-items:center;justify-content:center;
   transition:all .2s;font-size:12px;
 }
-.check-item.done .box{background:var(--green);border-color:var(--green);color:#fff}
+.check-item.done .box{background:var(--gn);border-color:var(--gn);color:#fff}
 .check-item .info{flex:1;min-width:0}
 .check-item .info .name{font-size:14px;font-weight:600}
-.check-item .info .hint{font-size:12px;color:var(--text2);margin-top:2px}
+.check-item .info .hint{font-size:12px;color:var(--t2);margin-top:2px}
 .check-item .time{font-size:11px;color:#bbb;white-space:nowrap}
 
 .habit-group{margin-bottom:18px}
 .habit-group .group-title{
-  font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px;
-  text-transform:uppercase;letter-spacing:.5px;
+  font-size:13px;font-weight:700;color:var(--t2);margin-bottom:8px;
   display:flex;align-items:center;gap:6px;
 }
-.habit-group .group-title .dot{
-  width:8px;height:8px;border-radius:50%;flex-shrink:0;
-}
-.dot-red{background:var(--accent)}.dot-blue{background:var(--blue)}.dot-green{background:var(--green)}.dot-orange{background:var(--orange)}
+.habit-group .group-title .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-red{background:var(--red)}.dot-bl{background:var(--bl)}.dot-gn{background:var(--gn)}.dot-or{background:var(--or)}
 
-.journal-entry{
-  padding:14px 0;border-bottom:1px solid #f0eeea;
-}
+.journal-entry{padding:14px 0;border-bottom:1px solid #f0eeea}
 .journal-entry:last-child{border-bottom:none}
-.journal-entry .j-date{font-size:12px;color:var(--text2);margin-bottom:8px}
+.journal-entry .j-date{font-size:12px;color:var(--t2);margin-bottom:8px}
 .journal-entry .j-line{
-  font-size:14px;padding:4px 0;padding-left:8px;border-left:3px solid var(--accent-l);
-  margin-bottom:6px;display:flex;gap:6px;
+  font-size:14px;padding:4px 0 4px 8px;border-left:3px solid var(--rl);margin-bottom:6px;
 }
-.journal-entry .j-line .j-label{font-size:12px;color:var(--text2);white-space:nowrap;min-width:48px}
-.journal-entry .j-line .j-text{flex:1}
-
-.empty-state{
-  text-align:center;padding:40px 20px;color:var(--text2);
-}
+.journal-entry .j-line .j-label{font-size:12px;color:var(--t2)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--t2)}
 .empty-state .icon{font-size:40px;margin-bottom:12px}
 
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
   padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;
-  border:none;cursor:pointer;transition:all .15s;
-  -webkit-tap-highlight-color:transparent;
+  border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;
 }
-.btn-primary{background:var(--accent);color:#fff}
+.btn-primary{background:var(--red);color:#fff}
 .btn-primary:active{background:#a01830}
-.btn-outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
-.btn-outline:active{background:var(--accent-l)}
+.btn-outline{background:transparent;color:var(--red);border:1.5px solid var(--red)}
+.btn-outline:active{background:var(--rl)}
 .btn-sm{padding:6px 14px;font-size:12px;border-radius:6px}
 .btn-full{width:100%;justify-content:center}
 
 .modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;
   display:flex;align-items:flex-end;justify-content:center;
-  animation:fadeIn .2s;
 }
 .modal{
   background:var(--card);border-radius:16px 16px 0 0;width:100%;max-width:560px;
   max-height:85vh;overflow-y:auto;padding:20px;
-  animation:slideUp .25s;
 }
 .modal-title{font-size:17px;font-weight:700;margin-bottom:16px}
 .modal textarea,.modal input{
-  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;
-  font-size:14px;font-family:inherit;resize:vertical;outline:none;
-  background:#fafaf8;
+  width:100%;padding:10px 14px;border:1px solid var(--br);border-radius:8px;
+  font-size:14px;font-family:inherit;outline:none;background:#fafaf8;
 }
-.modal textarea:focus,.modal input:focus{border-color:var(--accent)}
+.modal textarea:focus,.modal input:focus{border-color:var(--red)}
 .modal textarea{min-height:60px}
 .modal .field{margin-bottom:14px}
-.modal .field label{font-size:13px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px}
-.modal .field .hint-text{font-size:11px;color:#bbb;margin-top:4px}
+.modal .field label{font-size:13px;font-weight:600;color:var(--t2);display:block;margin-bottom:6px}
 .modal-btns{display:flex;gap:10px;margin-top:16px}
 .modal-btns .btn{flex:1}
-
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 
 .rule-item{
   display:flex;align-items:flex-start;gap:12px;padding:12px 0;
@@ -171,39 +125,33 @@ body{
 .rule-num{
   width:28px;height:28px;border-radius:50%;background:#f0eeea;
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;flex-shrink:0;color:var(--text2);
+  font-size:12px;font-weight:700;flex-shrink:0;color:var(--t2);
 }
 .rule-text{font-size:14px;flex:1;line-height:1.5}
-.rule-item.violated .rule-num{background:var(--accent-l);color:var(--accent)}
+.rule-item.violated .rule-num{background:var(--rl);color:var(--red)}
 .rule-item .violate-btn{
-  font-size:11px;color:var(--text2);white-space:nowrap;padding:4px 10px;
-  border:1px solid var(--border);border-radius:20px;cursor:pointer;background:none;
+  font-size:11px;color:var(--t2);white-space:nowrap;padding:4px 10px;
+  border:1px solid var(--br);border-radius:20px;cursor:pointer;background:none;
   -webkit-tap-highlight-color:transparent;
 }
-.rule-item .violate-btn:active{background:#f5f5f5}
 
 .bottom-nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:560px;background:var(--card);
-  border-top:1px solid var(--border);display:flex;z-index:150;
-  padding-bottom:var(--safe-b);
+  position:fixed;bottom:0;left:0;right:0;background:var(--card);
+  border-top:1px solid var(--br);display:flex;z-index:150;
 }
 .nav-item{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:8px 0 4px;cursor:pointer;color:#bbb;font-size:10px;
+  padding:8px 0 6px;cursor:pointer;color:#bbb;font-size:10px;
   -webkit-tap-highlight-color:transparent;transition:color .15s;gap:3px;
 }
 .nav-item .nicon{font-size:20px;line-height:1}
-.nav-item.active{color:var(--accent);font-weight:600}
+.nav-item.active{color:var(--red);font-weight:600}
 
-.tag{
-  display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;
-}
-.tag-red{background:var(--accent-l);color:var(--accent)}
-.tag-green{background:var(--green-l);color:var(--green)}
-.tag-blue{background:var(--blue-l);color:var(--blue)}
-.tag-orange{background:var(--orange-l);color:var(--orange)}
-.tag-gray{background:#f0eeea;color:#999}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600}
+.tag-red{background:var(--rl);color:var(--red)}
+.tag-gn{background:var(--gl);color:var(--gn)}
+.tag-bl{background:var(--bll);color:var(--bl)}
+.tag-or{background:var(--ol);color:var(--or)}
 
 .toast{
   position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:300;
@@ -217,101 +165,73 @@ body{
 }
 .timeline-item::before{
   content:'';position:absolute;left:8px;top:6px;width:10px;height:10px;border-radius:50%;
-  border:2px solid var(--border);background:var(--bg);
+  border:2px solid var(--br);background:var(--bg);
 }
 .timeline-item::after{
-  content:'';position:absolute;left:12px;top:18px;bottom:0;width:1px;background:var(--border);
+  content:'';position:absolute;left:12px;top:18px;bottom:0;width:1px;background:var(--br);
 }
 .timeline-item:last-child::after{display:none}
-.timeline-item.done::before{background:var(--green);border-color:var(--green)}
-.timeline-item.active::before{background:var(--accent);border-color:var(--accent)}
-.timeline-item .tl-date{font-size:11px;color:var(--text2);margin-bottom:2px}
+.timeline-item.done::before{background:var(--gn);border-color:var(--gn)}
+.timeline-item.active::before{background:var(--red);border-color:var(--red)}
+.timeline-item .tl-date{font-size:11px;color:var(--t2);margin-bottom:2px}
 .timeline-item .tl-title{font-size:14px;font-weight:600}
-.timeline-item .tl-desc{font-size:12px;color:var(--text2);margin-top:2px}
+.timeline-item .tl-desc{font-size:12px;color:var(--t2);margin-top:2px}
 
-.progress-bar{
-  height:6px;background:#eee;border-radius:3px;overflow:hidden;margin:8px 0;
-}
+.progress-bar{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin:8px 0}
 .progress-bar .fill{height:100%;border-radius:3px;transition:width .4s}
-.fill-red{background:var(--accent)}.fill-green{background:var(--green)}.fill-blue{background:var(--blue)}
+.fill-red{background:var(--red)}.fill-gn{background:var(--gn)}.fill-bl{background:var(--bl)}
 
-.setup-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;
-  display:flex;align-items:center;justify-content:center;padding:20px;
+.del-btn{
+  background:none;border:none;color:#bbb;font-size:16px;cursor:pointer;
+  padding:0 4px;-webkit-tap-highlight-color:transparent;
 }
-.setup-card{
-  background:var(--card);border-radius:16px;padding:28px 22px;max-width:420px;width:100%;
-  box-shadow:0 8px 40px rgba(0,0,0,.15);animation:fadeIn .3s;
-}
-.setup-card h2{font-size:20px;font-weight:700;margin-bottom:6px}
-.setup-card .sub{font-size:13px;color:var(--text2);margin-bottom:20px}
-.setup-card .step{
-  padding:12px 16px;background:#fafaf8;border-radius:10px;margin-bottom:12px;
-  border-left:3px solid var(--accent);font-size:13px;line-height:1.7;
-}
-.setup-card .step .step-num{font-weight:700;color:var(--accent)}
-.setup-card input{
-  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;
-  font-size:14px;font-family:monospace;outline:none;background:#fafaf8;margin-bottom:10px;
-}
-.setup-card input:focus{border-color:var(--accent)}
-.setup-card .test-result{font-size:12px;margin:8px 0;padding:8px 12px;border-radius:6px}
-.setup-card .test-result.ok{background:var(--green-l);color:var(--green)}
-.setup-card .test-result.fail{background:var(--accent-l);color:var(--accent)}
+body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
-@media(min-width:560px){
-  .header{padding:20px 8px 12px}
-  .tab-content{padding:0 8px}
+.journal-tabs{display:flex;gap:4px;margin-bottom:14px;background:#f0eeea;border-radius:8px;padding:3px}
+.journal-tabs .jt{
+  flex:1;text-align:center;padding:8px 0;border-radius:6px;font-size:12px;font-weight:600;
+  cursor:pointer;color:var(--t2);-webkit-tap-highlight-color:transparent;transition:all .15s;
 }
+.journal-tabs .jt.active{background:var(--card);color:var(--t);box-shadow:var(--sh)}
+
+.sim-counter{
+  display:flex;align-items:center;gap:10px;margin-top:6px;
+}
+.sim-counter .sc-btn{
+  width:32px;height:32px;border-radius:50%;border:1.5px solid var(--br);
+  background:var(--card);font-size:18px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--t);
+  transition:all .15s;
+}
+.sim-counter .sc-btn:active{background:#f0eeea;border-color:var(--t2)}
+.sim-counter .sc-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+.sim-counter .sc-num{font-size:20px;font-weight:700;min-width:40px;text-align:center}
+.sim-counter .sc-target{font-size:12px;color:var(--t2)}
+
+.export-bar{
+  display:flex;gap:8px;margin-bottom:14px;
+}
+.export-bar .btn{flex:1;font-size:12px;padding:8px 0}
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>📈 港股投资打卡</h1>
-  <div class="header-right">
-    <span class="sync-badge" id="syncBadge" onclick="forceSync()">⟳</span>
-    <button class="settings-btn" onclick="openSettings()" title="设置">⚙</button>
-    <div class="streak" id="streakBadge">🔥 <span id="streakCount">0</span> 天</div>
-  </div>
+  <div class="streak" id="streakBadge">🔥 <span id="streakCount">0</span> 天</div>
 </div>
-
-<!-- SETUP OVERLAY (shown on first visit) -->
-<div id="setupOverlay" style="display:none"></div>
 
 <!-- ===== DASHBOARD ===== -->
 <div class="tab-content active" id="tab-dashboard">
   <div class="stats-grid">
-    <div class="stat-item">
-      <div class="v blue" id="statLearning">0%</div>
-      <div class="l">学习进度</div>
-    </div>
-    <div class="stat-item">
-      <div class="v green" id="statHabits">0</div>
-      <div class="l">本月打卡</div>
-    </div>
-    <div class="stat-item">
-      <div class="v red" id="statJournal">0</div>
-      <div class="l">日志篇数</div>
-    </div>
-    <div class="stat-item">
-      <div class="v blue" id="statSim">0/30</div>
-      <div class="l">模拟交易</div>
-    </div>
+    <div class="stat-item"><div class="v bl" id="statLearning">0%</div><div class="l">学习进度</div></div>
+    <div class="stat-item"><div class="v gn" id="statHabits">0</div><div class="l">本月打卡</div></div>
+    <div class="stat-item"><div class="v red" id="statJournal">0</div><div class="l">日志篇数</div></div>
+    <div class="stat-item"><div class="v bl" id="statSim">0/30</div><div class="l">模拟交易</div></div>
   </div>
 
-  <!-- Sync config banner (hidden when configured) -->
-  <div class="sync-banner" id="syncBanner" onclick="openSettings()" style="display:none">
-    <div class="banner-emoji">🔄</div>
-    <div class="banner-txt">未配置多端同步 — 数据仅存本地</div>
-    <div class="banner-arrow">→</div>
-  </div>
-
-  <div class="card" style="margin-top:14px">
-    <div class="card-header">
-      <div class="card-title">📋 今天待办</div>
-      <span class="card-sub" id="todayDate"></span>
-    </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">📋 今天待办</div><span class="tag tag-bl" id="todayDate"></span></div>
     <div id="todayChecklist"></div>
   </div>
 
@@ -319,38 +239,41 @@ body{
     <div class="card-header"><div class="card-title">🗺 执行路线图</div></div>
     <div id="timelineEl"></div>
   </div>
+
+  <div class="export-bar">
+    <button class="btn btn-outline" onclick="exportData()" style="font-size:12px;padding:8px 0">📤 导出备份</button>
+    <button class="btn btn-outline" onclick="document.getElementById('importFile').click()" style="font-size:12px;padding:8px 0">📥 恢复备份</button>
+    <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(this)">
+  </div>
+  <div style="text-align:center;margin-bottom:10px">
+    <button class="del-btn" onclick="resetAll()" style="font-size:12px;color:#ccc">⚠ 重置所有数据</button>
+  </div>
 </div>
 
 <!-- ===== CHECKIN ===== -->
 <div class="tab-content" id="tab-checkin">
   <div class="card">
-    <div class="card-header">
-      <div class="card-title">📚 学习清单</div>
-      <span class="tag tag-blue" id="learningPct">0/14</span>
-    </div>
+    <div class="card-header"><div class="card-title">📚 学习清单</div><span class="tag tag-bl" id="learningPct">0/14</span></div>
     <div class="habit-group">
       <div class="group-title"><span class="dot dot-red"></span>必读书（4本）</div>
       <div id="checklistBooks"></div>
     </div>
     <div class="habit-group">
-      <div class="group-title"><span class="dot dot-blue"></span>纪录片/视频（4部）</div>
+      <div class="group-title"><span class="dot dot-bl"></span>纪录片/视频（4部）</div>
       <div id="checklistDocs"></div>
     </div>
     <div class="habit-group">
-      <div class="group-title"><span class="dot dot-green"></span>工具掌握（3项）</div>
+      <div class="group-title"><span class="dot dot-gn"></span>工具掌握（3项）</div>
       <div id="checklistTools"></div>
     </div>
     <div class="habit-group">
-      <div class="group-title"><span class="dot dot-orange"></span>模拟交易目标（30笔）</div>
+      <div class="group-title"><span class="dot dot-or"></span>模拟交易目标（30笔）</div>
       <div id="checklistSim"></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-header">
-      <div class="card-title">⚡ 每日习惯</div>
-      <span class="card-sub" id="habitDate"></span>
-    </div>
+    <div class="card-header"><div class="card-title">⚡ 每日习惯</div><span class="card-sub" id="habitDate"></span></div>
     <div id="dailyHabits"></div>
   </div>
 
@@ -362,26 +285,27 @@ body{
 
 <!-- ===== JOURNAL ===== -->
 <div class="tab-content" id="tab-journal">
-  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+  <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
     <button class="btn btn-primary btn-sm" onclick="openJournalModal()">✏️ 写日志</button>
     <button class="btn btn-outline btn-sm" onclick="openWeeklyModal()">📈 周复盘</button>
     <button class="btn btn-outline btn-sm" onclick="openMonthlyModal()">💰 月检视</button>
   </div>
-  <div id="journalList">
-    <div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志<br>每天收盘后写三句话</p></div>
+  <div class="journal-tabs">
+    <div class="jt active" onclick="switchJournalTab('daily')">📝 日志</div>
+    <div class="jt" onclick="switchJournalTab('weekly')">📈 周复盘</div>
+    <div class="jt" onclick="switchJournalTab('monthly')">💰 月检视</div>
   </div>
+  <div id="journalList"><div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志</p></div></div>
+  <div id="weeklyList" style="display:none"><div class="empty-state"><div class="icon">📈</div><p>还没写过周复盘</p></div></div>
+  <div id="monthlyList" style="display:none"><div class="empty-state"><div class="icon">💰</div><p>还没写过月检视</p></div></div>
 </div>
 
 <!-- ===== DISCIPLINE ===== -->
 <div class="tab-content" id="tab-discipline">
   <div class="card">
-    <div class="card-header">
-      <div class="card-title">📜 投资纪律手册</div>
-      <span class="tag tag-green" id="disciplineStatus">守纪中</span>
-    </div>
+    <div class="card-header"><div class="card-title">📜 投资纪律手册</div><span class="tag tag-gn" id="disciplineStatus">守纪中</span></div>
     <div id="disciplineRules"></div>
   </div>
-
   <div class="card">
     <div class="card-header"><div class="card-title">🚫 不买清单</div></div>
     <div id="dontBuyList"></div>
@@ -390,775 +314,522 @@ body{
 
 <!-- ===== BOTTOM NAV ===== -->
 <div class="bottom-nav">
-  <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
-    <span class="nicon">📊</span>仪表盘
-  </div>
-  <div class="nav-item" data-tab="checkin" onclick="switchTab('checkin')">
-    <span class="nicon">✅</span>打卡
-  </div>
-  <div class="nav-item" data-tab="journal" onclick="switchTab('journal')">
-    <span class="nicon">📝</span>日志
-  </div>
-  <div class="nav-item" data-tab="discipline" onclick="switchTab('discipline')">
-    <span class="nicon">🛡</span>纪律
-  </div>
+  <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="nicon">📊</span>仪表盘</div>
+  <div class="nav-item" data-tab="checkin" onclick="switchTab('checkin')"><span class="nicon">✅</span>打卡</div>
+  <div class="nav-item" data-tab="journal" onclick="switchTab('journal')"><span class="nicon">📝</span>日志</div>
+  <div class="nav-item" data-tab="discipline" onclick="switchTab('discipline')"><span class="nicon">🛡</span>纪律</div>
 </div>
 
 <div class="toast" id="toast"></div>
 <div id="modalContainer"></div>
 
 <script>
-// ==================== GITHUB CONFIG ====================
-function getGhConfig(){
-  return {
-    token: localStorage.getItem('hk_gh_token') || '',
-    repo: localStorage.getItem('hk_gh_repo') || '',
-    path: localStorage.getItem('hk_gh_path') || 'data.json',
-  };
-}
+// ==================== DATA ====================
+const K='hk_guide_data';
 
-function hasGhConfig(){
-  const c = getGhConfig();
-  return !!(c.token && c.repo);
-}
+function def(){return{
+  learning:{
+    books:[
+      {id:'b1',name:'《聪明的投资者》',hint:'重点：第8章+第20章',done:false,at:null},
+      {id:'b2',name:'《投资中最简单的事》',hint:'邱国鹭·中文语境港股案例',done:false,at:null},
+      {id:'b3',name:'《巴菲特致股东的信》',hint:'重点：1987/2000/2008年份',done:false,at:null},
+      {id:'b4',name:'《行为投资学手册》',hint:'詹姆斯·蒙蒂尔·行为金融',done:false,at:null}
+    ],
+    docs:[
+      {id:'d1',name:'《成为沃伦·巴菲特》',hint:'HBO 2017·复利思维',done:false,at:null},
+      {id:'d2',name:'《大空头》',hint:'大多数人错在哪里',done:false,at:null},
+      {id:'d3',name:'《华尔街之狼》',hint:'反面教材·不信稳赚不赔',done:false,at:null},
+      {id:'d4',name:'《安然：房间里最聪明的人》',hint:'财报造假经典案例',done:false,at:null}
+    ],
+    tools:[
+      {id:'t1',name:'模拟交易账户开通',hint:'富途/盈立/老虎·虚拟资金练3个月',done:false,at:null},
+      {id:'t2',name:'港交所披露易 (hkexnews.hk)',hint:'能独立查找公司公告',done:false,at:null},
+      {id:'t3',name:'数据终端日常使用',hint:'富途牛牛/TradingView 每日固定使用',done:false,at:null}
+    ],
+    sim:{done:0,target:30}
+  },
+  habits:{},
+  journal:[],
+  weekly:[],
+  monthly:[],
+  discipline:[],
+  _periodic:{}
+}}
 
-// ==================== GITHUB API ====================
-async function ghApi(method, cfg, body){
-  const url = `https://api.github.com/repos/${cfg.repo}/contents/${cfg.path}`;
-  const headers = {
-    'Authorization': `Bearer ${cfg.token}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json',
-  };
-  const opts = { method, headers };
-  if(body) opts.body = JSON.stringify(body);
-  const res = await fetch(url, opts);
-  if(!res.ok){
-    const err = await res.json().catch(()=>({}));
-    throw { status: res.status, message: err.message || res.statusText };
-  }
-  return res.json();
-}
+function L(){try{var d=JSON.parse(localStorage.getItem(K));return d||def()}catch(e){return def()}}
+function S(d){localStorage.setItem(K,JSON.stringify(d))}
 
-// ==================== DATA LAYER ====================
-const LS_KEY = 'hk_guide_data';
-let useGithub = false;
-let _ghSha = null; // stored sha for updates
-
-function defaultData(){
-  return {
-    learning: {
-      books: [
-        {id:'b1',name:'《聪明的投资者》',hint:'重点：第8章+第20章',done:false,doneAt:null},
-        {id:'b2',name:'《投资中最简单的事》',hint:'邱国鹭·中文语境港股案例',done:false,doneAt:null},
-        {id:'b3',name:'《巴菲特致股东的信》',hint:'重点：1987/2000/2008年份',done:false,doneAt:null},
-        {id:'b4',name:'《行为投资学手册》',hint:'詹姆斯·蒙蒂尔·行为金融',done:false,doneAt:null},
-      ],
-      docs: [
-        {id:'d1',name:'《成为沃伦·巴菲特》',hint:'HBO 2017·复利思维',done:false,doneAt:null},
-        {id:'d2',name:'《大空头》',hint:'大多数人错在哪里',done:false,doneAt:null},
-        {id:'d3',name:'《华尔街之狼》',hint:'反面教材·不信稳赚不赔',done:false,doneAt:null},
-        {id:'d4',name:'《安然：房间里最聪明的人》',hint:'财报造假经典案例',done:false,doneAt:null},
-      ],
-      tools: [
-        {id:'t1',name:'模拟交易账户开通',hint:'富途/盈立/老虎·虚拟资金练3个月',done:false,doneAt:null},
-        {id:'t2',name:'港交所披露易 (hkexnews.hk)',hint:'能独立查找公司公告',done:false,doneAt:null},
-        {id:'t3',name:'数据终端日常使用',hint:'富途牛牛/TradingView 每日固定使用',done:false,doneAt:null},
-      ],
-      simTrades:{done:0,target:30}
-    },
-    habits:{},
-    journal:[],
-    weekly:[],
-    monthly:[],
-    discipline:[],
-  };
-}
-
-function lsLoad(){
-  const raw = localStorage.getItem(LS_KEY);
-  if(!raw) return defaultData();
-  try{ return JSON.parse(raw); }catch(e){ return defaultData(); }
-}
-function lsSave(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)); }
-
-async function githubLoad(){
-  const cfg = getGhConfig();
-  try{
-    const result = await ghApi('GET', cfg);
-    _ghSha = result.sha;
-    const content = JSON.parse(atob(result.content));
-    useGithub = true;
-    return content;
-  }catch(e){
-    if(e.status === 404){
-      // File doesn't exist yet — use local data, will create on first save
-      useGithub = true;
-      _ghSha = null;
-      return lsLoad();
-    }
-    console.warn('GitHub load failed:', e);
-    useGithub = false;
-    return lsLoad();
-  }
-}
-
-async function githubSave(data){
-  const cfg = getGhConfig();
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  const body = {
-    message: `Update data — ${new Date().toLocaleString('zh-CN')}`,
-    content: content,
-  };
-  if(_ghSha) body.sha = _ghSha;
-
-  try{
-    const result = await ghApi('PUT', cfg, body);
-    _ghSha = result.content.sha;
-    lsSave(data);
-    updateSyncBadge('online', '已同步');
-    return true;
-  }catch(e){
-    if(e.status === 409){
-      // Conflict — reload and merge
-      console.warn('Conflict detected, reloading...');
-      const remote = await githubLoad();
-      if(remote){
-        // Simple merge: remote wins for most fields, but preserve local journal entries not in remote
-        const merged = mergeData(remote, data);
-        _ghSha = null;
-        return githubSave(merged);
-      }
-    }
-    console.warn('GitHub save failed:', e);
-    lsSave(data);
-    updateSyncBadge('error', '同步失败');
-    return false;
-  }
-}
-
-function mergeData(remote, local){
-  // Merge: keep all local journal entries that don't exist in remote (by createdAt)
-  const remoteIds = new Set(remote.journal.map(j=>j.createdAt));
-  const localOnly = local.journal.filter(j=>!remoteIds.has(j.createdAt));
-  remote.journal = [...remote.journal, ...localOnly];
-  // Merge habits: local takes priority (more recent)
-  for(const [date, habits] of Object.entries(local.habits||{})){
-    if(!remote.habits[date]) remote.habits[date] = {};
-    for(const [k,v] of Object.entries(habits)){
-      if(v) remote.habits[date][k] = v;
-    }
-  }
-  // Merge learning: done=true wins
-  for(const cat of ['books','docs','tools']){
-    for(let i=0;i<(local.learning[cat]||[]).length;i++){
-      if(local.learning[cat][i]?.done && remote.learning[cat]?.[i]){
-        remote.learning[cat][i].done = true;
-        if(local.learning[cat][i].doneAt) remote.learning[cat][i].doneAt = local.learning[cat][i].doneAt;
-      }
-    }
-  }
-  if(local.learning.simTrades?.done > (remote.learning.simTrades?.done||0)){
-    remote.learning.simTrades.done = local.learning.simTrades.done;
-  }
-  // Merge discipline
-  const discIds = new Set(remote.discipline.map(d=>d.createdAt));
-  const discOnly = local.discipline.filter(d=>!discIds.has(d.createdAt));
-  remote.discipline = [...remote.discipline, ...discOnly];
-  // Merge weekly/monthly
-  for(const key of ['weekly','monthly']){
-    const rid = new Set(remote[key].map(d=>d.createdAt));
-    remote[key] = [...remote[key], ...local[key].filter(d=>!rid.has(d.createdAt))];
-  }
-  return remote;
-}
-
-// ==================== STATE ====================
-let DATA = null;
-let _settingsOpen = false;
-
-async function initData(){
-  if(hasGhConfig()){
-    DATA = await githubLoad();
-  }else{
-    DATA = lsLoad();
-    useGithub = false;
-    updateSyncBadge('offline', '仅本地');
-  }
-}
-
-async function saveData(){
-  if(useGithub && hasGhConfig()){
-    await githubSave(DATA);
-  }else{
-    lsSave(DATA);
-    updateSyncBadge('offline', '仅本地');
-  }
-}
-
-function updateSyncBadge(status, text){
-  const badge = document.getElementById('syncBadge');
-  badge.className = 'sync-badge ' + status;
-  if(status === 'online') badge.textContent = '☁️ ' + text;
-  else if(status === 'offline') badge.textContent = '💾 ' + text;
-  else badge.textContent = '⚠ ' + text;
-}
-
-async function forceSync(){
-  if(!hasGhConfig()){
-    toast('请先配置 GitHub 同步');
-    openSettings();
-    return;
-  }
-  toast('⟳ 同步中...');
-  try{
-    const remote = await githubLoad();
-    if(remote){
-      const merged = mergeData(remote, DATA);
-      DATA = merged;
-      await githubSave(DATA);
-      updateSyncBadge('online', '已同步');
-      refreshActiveTab();
-      toast('✅ 同步完成');
-    }
-  }catch(e){
-    updateSyncBadge('error', '同步失败');
-    toast('⚠ 同步失败，数据已存本地');
-  }
-}
-
-// ==================== SETTINGS ====================
-function openSettings(){
-  _settingsOpen = true;
-  const cfg = getGhConfig();
-  document.getElementById('modalContainer').innerHTML = `
-    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
-      <div class="modal">
-        <div class="modal-title">⚙ GitHub 同步设置</div>
-        <div class="field">
-          <label>GitHub 个人访问令牌 (Token)</label>
-          <input id="sToken" value="${escapeHtml(cfg.token)}" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-          <div class="hint-text">需勾选 <strong>repo</strong> 权限 · <a href="https://github.com/settings/tokens/new?scopes=repo&description=hk-app" target="_blank" style="color:var(--accent)">点此直接创建→</a></div>
-        </div>
-        <div class="field">
-          <label>仓库名</label>
-          <input id="sRepo" value="${escapeHtml(cfg.repo)}" placeholder="用户名/仓库名，如：zhangsan/hk-data">
-        </div>
-        <div class="field">
-          <label>文件路径（可选）</label>
-          <input id="sPath" value="${escapeHtml(cfg.path)}" placeholder="data.json">
-        </div>
-
-        <div style="background:#fafaf8;border-radius:10px;padding:14px;margin:12px 0;font-size:12px;line-height:1.8">
-          <strong style="color:var(--accent)">📋 配置步骤：</strong><br>
-          1. 点击上方链接创建 Token，权限勾 <strong>repo</strong><br>
-          2. 复制 Token 粘贴到上方<br>
-          3. <a href="https://github.com/new?name=hk-investment-data&visibility=private" target="_blank" style="color:var(--accent)">创建私有仓库 hk-investment-data→</a><br>
-          4. 仓库名填 <code style="background:#eee;padding:1px 4px;border-radius:3px">你的用户名/hk-investment-data</code><br>
-          5. 点「测试连接」→ 成功后保存
-        </div>
-
-        <div id="testResult"></div>
-
-        <div class="modal-btns">
-          <button class="btn btn-outline" onclick="closeModal()">取消</button>
-          <button class="btn btn-outline" onclick="testGhConnection()">🔗 测试连接</button>
-          <button class="btn btn-primary" onclick="saveSettings()">💾 保存</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function escapeHtml(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-async function testGhConnection(){
-  const token = document.getElementById('sToken').value.trim();
-  const repo = document.getElementById('sRepo').value.trim();
-  const path = document.getElementById('sPath').value.trim() || 'data.json';
-  const resultEl = document.getElementById('testResult');
-
-  if(!token || !repo){
-    resultEl.innerHTML = '<div class="test-result fail">请填写 Token 和仓库名</div>';
-    return;
-  }
-
-  resultEl.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">⏳ 测试中...</div>';
-
-  try{
-    const cfg = { token, repo, path };
-    const url = `https://api.github.com/repos/${repo}/contents/${path}`;
-    const res = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-      }
-    });
-    if(res.status === 404){
-      resultEl.innerHTML = '<div class="test-result ok">✅ 连接成功！仓库已就绪，首次保存时会自动创建文件</div>';
-    }else if(res.ok){
-      resultEl.innerHTML = '<div class="test-result ok">✅ 连接成功！找到已有数据文件</div>';
-    }else if(res.status === 401){
-      resultEl.innerHTML = '<div class="test-result fail">❌ Token 无效或已过期</div>';
-    }else if(res.status === 403){
-      resultEl.innerHTML = '<div class="test-result fail">❌ 权限不足：Token 需要勾选 repo 权限</div>';
-    }else{
-      const err = await res.json().catch(()=>({}));
-      resultEl.innerHTML = `<div class="test-result fail">❌ 错误: ${err.message || res.statusText}</div>`;
-    }
-  }catch(e){
-    resultEl.innerHTML = `<div class="test-result fail">❌ 网络错误: ${e.message}</div>`;
-  }
-}
-
-async function saveSettings(){
-  const token = document.getElementById('sToken').value.trim();
-  const repo = document.getElementById('sRepo').value.trim();
-  const path = document.getElementById('sPath').value.trim() || 'data.json';
-
-  if(!token || !repo){
-    toast('Token 和仓库名必填');
-    return;
-  }
-
-  localStorage.setItem('hk_gh_token', token);
-  localStorage.setItem('hk_gh_repo', repo);
-  localStorage.setItem('hk_gh_path', path);
-
-  // Try to sync immediately
-  closeModal();
-  useGithub = true;
-  _ghSha = null;
-
-  // Load from GitHub
-  try{
-    DATA = await githubLoad();
-    updateSyncBadge('online', '已同步');
-    refreshActiveTab();
-    toast('✅ 设置已保存并同步');
-  }catch(e){
-    updateSyncBadge('error', '待同步');
-    toast('⚙ 设置已保存，稍后重试同步');
-    refreshActiveTab();
-  }
-}
-
-// ==================== HELPERS ====================
-const today = () => new Date().toISOString().slice(0,10);
-const fmtDate = (d) => { const dt = new Date(d); return `${dt.getMonth()+1}/${dt.getDate()}`; };
-const fmtFull = (d) => { const dt = new Date(d); return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`; };
+// ==================== TOAST ====================
+var _tt;
 function toast(msg){
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),1800);
+  var el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(function(){el.classList.remove('show')},2000);
 }
 
-function calcStreak(){
-  const habits = DATA.habits;
-  let streak = 0;
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  while(true){
-    const key = d.toISOString().slice(0,10);
-    const h = habits[key];
-    if(!h) break;
-    const done = [h.morning, h.noTrade, h.journal].filter(Boolean).length;
-    if(done < 3) break;
-    streak++;
-    d.setDate(d.getDate() - 1);
-  }
-  const todayKey = today();
-  const todayH = habits[todayKey];
-  if(todayH){
-    const todayDone = [todayH.morning, todayH.noTrade, todayH.journal].filter(Boolean).length;
-    if(todayDone >= 3) streak++;
-  }
-  return streak;
+// ==================== UTILS ====================
+function pad2(n){return String(n).padStart(2,'0')}
+function today(){var d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());}
+function thisWeek(){
+  var d=new Date();var day=d.getDay()||7;d.setDate(d.getDate()-day+1);
+  return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+}
+function thisMonth(){return today().slice(0,7)}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function escAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}
+
+// ==================== MODAL HELPERS ====================
+var _scrollY=0;
+function openModal(){_scrollY=window.scrollY;document.body.classList.add('no-scroll')}
+function closeModal(){document.body.classList.remove('no-scroll');document.getElementById('modalContainer').innerHTML='';window.scrollTo(0,_scrollY)}
+
+// ==================== TABS ====================
+var _journalSubTab='daily';
+function switchTab(t){
+  document.querySelectorAll('.tab-content').forEach(function(e){e.classList.remove('active')});
+  document.querySelectorAll('.nav-item').forEach(function(e){e.classList.remove('active')});
+  document.getElementById('tab-'+t).classList.add('active');
+  document.querySelector('.nav-item[data-tab="'+t+'"]').classList.add('active');
+  refreshActiveTab();
+}
+function switchJournalTab(t){
+  _journalSubTab=t;
+  document.querySelectorAll('.journal-tabs .jt').forEach(function(e){e.classList.remove('active')});
+  document.querySelector('.journal-tabs .jt:nth-child('+(t==='daily'?1:t==='weekly'?2:3)+')').classList.add('active');
+  document.getElementById('journalList').style.display=t==='daily'?'block':'none';
+  document.getElementById('weeklyList').style.display=t==='weekly'?'block':'none';
+  document.getElementById('monthlyList').style.display=t==='monthly'?'block':'none';
+  R_journal();
 }
 
-function calcLearningPct(){
-  const l = DATA.learning;
-  const total = l.books.length + l.docs.length + l.tools.length;
-  let done = l.books.filter(b=>b.done).length + l.docs.filter(d=>d.done).length + l.tools.filter(t=>t.done).length;
-  return Math.round((done/total)*100);
-}
-
-function calcHabitCountThisMonth(){
-  const now = new Date();
-  const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  let count = 0;
-  for(const [date, h] of Object.entries(DATA.habits)){
-    if(date.startsWith(month)){
-      count += [h.morning, h.noTrade, h.noon, h.journal, h.water].filter(Boolean).length;
-    }
-  }
-  return count;
+function refreshActiveTab(){
+  var t=document.querySelector('.tab-content.active').id;
+  if(t==='tab-dashboard') R_dashboard();
+  else if(t==='tab-checkin') R_checkin();
+  else if(t==='tab-journal') R_journal();
+  else if(t==='tab-discipline') R_discipline();
+  updateStreak();
 }
 
 // ==================== DASHBOARD ====================
-function renderDashboard(){
-  document.getElementById('syncBanner').style.display = hasGhConfig() ? 'none' : 'flex';
-  document.getElementById('statLearning').textContent = calcLearningPct() + '%';
-  document.getElementById('statHabits').textContent = calcHabitCountThisMonth();
-  document.getElementById('statJournal').textContent = DATA.journal.length;
-  document.getElementById('statSim').textContent = DATA.learning.simTrades.done + '/30';
-  document.getElementById('streakCount').textContent = calcStreak();
-  document.getElementById('todayDate').textContent = fmtFull(today());
-  renderTodayChecklist();
-  renderTimeline();
-}
+function R_dashboard(){
+  var d=L(),l=d.learning;
+  var all=[].concat(l.books,l.docs,l.tools);
+  var done=all.filter(function(x){return x.done}).length;
+  document.getElementById('statLearning').textContent=Math.round(done/all.length*100)+'%';
+  document.getElementById('statSim').textContent=l.sim.done+'/'+l.sim.target;
 
-function renderTodayChecklist(){
-  const key = today();
-  const h = DATA.habits[key] || {};
-  const items = [
-    {id:'morning',icon:'🌅',name:'8:00 盘前5分钟快扫',hint:'美股收盘+公告+自选新闻',done:!!h.morning,time:'8:00'},
-    {id:'noTrade',icon:'🛑',name:'9:30-10:30 只看不碰',hint:'铁律：开盘首小时不做任何买卖',done:!!h.noTrade,time:'9:30-10:30'},
-    {id:'noon',icon:'📊',name:'12:00 扫一眼半日走势',hint:'持仓异常？大盘方向？不做决定',done:!!h.noon,time:'12:00'},
-    {id:'journal',icon:'📝',name:'16:10 10分钟投资日记',hint:'三句话：冲动/持仓变化/学到的',done:!!h.journal,time:'16:10'},
-    {id:'water',icon:'💧',name:'每次想买卖→先喝水等10分钟',hint:'80%冲动会在10分钟内消失',done:!!h.water,time:'全天'},
+  // Habits this month (iterate all date keys matching this month)
+  var m=thisMonth(),cnt=0;
+  Object.keys(d.habits||{}).forEach(function(k){
+    if(k.slice(0,7)===m) Object.values(d.habits[k]).forEach(function(v){if(v)cnt++});
+  });
+  document.getElementById('statHabits').textContent=cnt;
+
+  document.getElementById('statJournal').textContent=d.journal.length;
+  document.getElementById('todayDate').textContent=fmt(today());
+
+  // Today checklist — all 5 daily habits
+  var h=document.getElementById('todayChecklist'),td=today(),hd=d.habits[td]||{};
+  var jDone=d.journal.filter(function(j){return j.date===td}).length>0;
+  var items=[
+    {id:'h1',icon:'🌅',name:'8:00 盘前快扫',done:!!hd.h1},
+    {id:'h2',icon:'🛑',name:'9:30-10:30 只看不碰',done:!!hd.h2},
+    {id:'h3',icon:'📊',name:'12:00 午休看一眼',done:!!hd.h3},
+    {id:'h4',icon:'📝',name:'16:10 写三句话日记',done:!!hd.h4||jDone,clickJournal:true},
+    {id:'h5',icon:'📖',name:'晚上读研报/财报 30 分钟',done:!!hd.h5}
   ];
-  const allDone = items.every(i=>i.done);
-  const el = document.getElementById('todayChecklist');
-  el.innerHTML = items.map(i=>`
-    <div class="check-item ${i.done?'done':''}" onclick="toggleHabit('${i.id}')">
-      <div class="box">${i.done?'✓':''}</div>
-      <div class="info"><div class="name">${i.icon} ${i.name}</div><div class="hint">${i.hint}</div></div>
-      <div class="time">${i.time}</div>
-    </div>`).join('');
-  if(allDone){
-    el.innerHTML += '<div style="text-align:center;padding:8px;color:var(--green);font-size:13px;font-weight:600;">🎉 今天的任务全部完成！</div>';
-  }
-}
 
-function renderTimeline(){
-  const phases = [
-    {label:'立刻',time:'本周',desc:'买《聪明的投资者》+ 开通模拟交易 + 写第一篇日记',tag:'red'},
-    {label:'学习期',time:'第1-2月',desc:'读完4本书+4部纪录片',tag:'red'},
-    {label:'工具期',time:'第3-4月',desc:'模拟交易30+笔+搞懂港股规则',tag:'orange'},
-    {label:'纪律期',time:'第5-6月',desc:'复盘模拟交易+写纪律手册+建立不买清单',tag:'orange'},
-    {label:'入场',time:'2027年初',desc:'50万分6个月分批建仓',tag:'green'},
-    {label:'执行',time:'2027-2032',desc:'每日习惯+每周复盘+每月再平衡',tag:'green'},
-    {label:'退出',time:'2032全年',desc:'逐步减仓→退休前全部转固收',tag:'blue'},
+  h.innerHTML='';
+  items.forEach(function(x){
+    var div=document.createElement('div');
+    div.className='check-item'+(x.done?' done':'');
+    div.onclick=function(){
+      if(x.clickJournal){C_habit(x.id);switchTab('journal')}
+      else C_habit(x.id);
+    };
+    div.innerHTML='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.icon+' '+x.name+'</div></div>';
+    if(x.done) div.innerHTML+='<div class="time">✓</div>';
+    h.appendChild(div);
+  });
+
+  // Timeline
+  var all=[].concat(l.books,l.docs,l.tools);
+  var bookDone=l.books.filter(function(x){return x.done}).length===4;
+  var docDone=l.docs.filter(function(x){return x.done}).length>=1;
+  var toolDone=l.tools.filter(function(x){return x.done}).length>=2;
+  var stages=[
+    {date:'2026.07-08',title:'第1-2月：基础阅读',desc:'读完4本书 + 看过1部纪录片',done:bookDone&&docDone},
+    {date:'2026.09-10',title:'第3-4月：工具与规则',desc:'开模拟账户 + 掌握披露易',done:toolDone},
+    {date:'2026.11-12',title:'第5-6月：模拟实战',desc:'30笔交易 + 日记习惯养成',done:l.sim.done>=30},
+    {date:'2027.01',title:'正式入场',desc:'50万分6个月分批建仓',done:false}
   ];
-  const lpct = calcLearningPct();
-  let activeIdx = 0;
-  if(lpct >= 100) activeIdx = 4;
-  else if(lpct >= 70) activeIdx = 3;
-  else if(lpct >= 30) activeIdx = 2;
-  else if(lpct >= 5) activeIdx = 1;
-  document.getElementById('timelineEl').innerHTML = phases.map((p,i)=>{
-    let cls = '';
-    if(i < activeIdx) cls = 'done';
-    else if(i === activeIdx) cls = 'active';
-    return `<div class="timeline-item ${cls}"><div class="tl-date"><span class="tag tag-${p.tag}">${p.label}</span> · ${p.time}</div><div class="tl-title">${p.desc}</div></div>`;
-  }).join('');
-}
-
-// ==================== HABIT TOGGLE ====================
-async function toggleHabit(id){
-  const key = today();
-  if(!DATA.habits[key]) DATA.habits[key] = {};
-  DATA.habits[key][id] = !DATA.habits[key][id];
-  await saveData();
-  refreshActiveTab();
+  var tl=document.getElementById('timelineEl'),html='';
+  stages.forEach(function(s,i){
+    var cls='timeline-item';
+    if(s.done) cls+=' done';
+    else if(i===0||stages[i-1].done) cls+=' active';
+    html+='<div class="'+cls+'"><div class="tl-date">'+s.date+'</div><div class="tl-title">'+s.title+'</div><div class="tl-desc">'+s.desc+'</div></div>';
+  });
+  tl.innerHTML=html;
 }
 
 // ==================== CHECKIN ====================
-function renderCheckin(){
-  const l = DATA.learning;
-  const totalItems = l.books.length + l.docs.length + l.tools.length;
-  const doneItems = l.books.filter(b=>b.done).length + l.docs.filter(d=>d.done).length + l.tools.filter(t=>t.done).length;
-  document.getElementById('learningPct').textContent = doneItems + '/' + totalItems;
+function C_learning(gid,id){
+  var d=L(),g=d.learning[gid];
+  var item=g.find(function(x){return x.id===id});
+  if(!item) return;
+  item.done=!item.done;item.at=item.done?today():null;
+  S(d);refreshActiveTab();
+}
 
-  document.getElementById('checklistBooks').innerHTML = l.books.map((b,i)=>`
-    <div class="check-item ${b.done?'done':''}" onclick="toggleLearning('books',${i})">
-      <div class="box">${b.done?'✓':''}</div>
-      <div class="info"><div class="name">${b.name}</div><div class="hint">${b.hint}</div></div>
-      ${b.doneAt?`<div class="time">${fmtDate(b.doneAt)}</div>`:''}
-    </div>`).join('');
+function C_habit(id){
+  var d=L(),td=today();
+  if(!d.habits[td]) d.habits[td]={};
+  d.habits[td][id]=!d.habits[td][id];
+  S(d);refreshActiveTab();
+}
 
-  document.getElementById('checklistDocs').innerHTML = l.docs.map((d,i)=>`
-    <div class="check-item ${d.done?'done':''}" onclick="toggleLearning('docs',${i})">
-      <div class="box">${d.done?'✓':''}</div>
-      <div class="info"><div class="name">${d.name}</div><div class="hint">${d.hint}</div></div>
-      ${d.doneAt?`<div class="time">${fmtDate(d.doneAt)}</div>`:''}
-    </div>`).join('');
+function C_periodic(type){
+  var d=L(),key;
+  if(type==='week'){key=thisWeek();if(!d._periodic)d._periodic={};
+    d._periodic['w_'+key]=!d._periodic['w_'+key];}
+  else if(type==='month'){key=thisMonth();if(!d._periodic)d._periodic={};
+    d._periodic['m_'+key]=!d._periodic['m_'+key];}
+  S(d);refreshActiveTab();
+}
 
-  document.getElementById('checklistTools').innerHTML = l.tools.map((t,i)=>`
-    <div class="check-item ${t.done?'done':''}" onclick="toggleLearning('tools',${i})">
-      <div class="box">${t.done?'✓':''}</div>
-      <div class="info"><div class="name">${t.name}</div><div class="hint">${t.hint}</div></div>
-      ${t.doneAt?`<div class="time">${fmtDate(t.doneAt)}</div>`:''}
-    </div>`).join('');
+function C_sim(delta){
+  var d=L();
+  var nv=d.learning.sim.done+delta;
+  if(nv<0) nv=0; if(nv>d.learning.sim.target) nv=d.learning.sim.target;
+  d.learning.sim.done=nv;
+  S(d);refreshActiveTab();
+}
 
-  document.getElementById('checklistSim').innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0">
-      <button class="btn btn-outline btn-sm" onclick="addSimTrade()">+ 记录一笔</button>
-      <div style="flex:1;min-width:0">
-        <div class="progress-bar"><div class="fill fill-blue" style="width:${(l.simTrades.done/30)*100}%"></div></div>
-        <div style="font-size:11px;color:var(--text2);text-align:right">${l.simTrades.done} / 30 笔</div>
-      </div>
-    </div>`;
+function R_checkin(){
+  var d=L(),l=d.learning;
+  document.getElementById('habitDate').textContent=fmt(today());
 
-  const key = today();
-  const h = DATA.habits[key] || {};
-  document.getElementById('habitDate').textContent = fmtFull(today());
-  const habitItems = [
-    {id:'morning',icon:'🌅',name:'8:00 盘前快扫',hint:'美股+公告+自选新闻'},
-    {id:'noTrade',icon:'🛑',name:'9:30-10:30 只看不碰',hint:'开盘首小时不做买卖'},
-    {id:'noon',icon:'📊',name:'12:00 半日走势扫一眼',hint:'持仓+大盘方向'},
-    {id:'journal',icon:'📝',name:'16:10 写投资日记',hint:'冲动/持仓变化/学到的'},
-    {id:'water',icon:'💧',name:'买卖前喝水等10分钟',hint:'克制冲动'},
+  // Book checklist
+  var b=document.getElementById('checklistBooks'),html='';
+  l.books.forEach(function(x){
+    html+='<div class="check-item'+(x.done?' done':'')+'" onclick="C_learning(\'books\',\''+x.id+'\')">';
+    html+='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.name+'</div><div class="hint">'+x.hint+'</div></div>';
+    if(x.at) html+='<div class="time">'+fmt(x.at)+'</div>';
+    html+='</div>';
+  });
+  b.innerHTML=html;
+
+  // Docs checklist
+  var c=document.getElementById('checklistDocs');html='';
+  l.docs.forEach(function(x){
+    html+='<div class="check-item'+(x.done?' done':'')+'" onclick="C_learning(\'docs\',\''+x.id+'\')">';
+    html+='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.name+'</div><div class="hint">'+x.hint+'</div></div>';
+    if(x.at) html+='<div class="time">'+fmt(x.at)+'</div>';
+    html+='</div>';
+  });
+  c.innerHTML=html;
+
+  // Tools checklist
+  var t=document.getElementById('checklistTools');html='';
+  l.tools.forEach(function(x){
+    html+='<div class="check-item'+(x.done?' done':'')+'" onclick="C_learning(\'tools\',\''+x.id+'\')">';
+    html+='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.name+'</div><div class="hint">'+x.hint+'</div></div>';
+    if(x.at) html+='<div class="time">'+fmt(x.at)+'</div>';
+    html+='</div>';
+  });
+  t.innerHTML=html;
+
+  // Sim trades
+  var s=document.getElementById('checklistSim');
+  s.innerHTML='<div class="progress-bar"><div class="fill fill-bl" style="width:'+(l.sim.done/l.sim.target*100)+'%"></div></div>';
+  s.innerHTML+='<div class="sim-counter">';
+  s.innerHTML+='<button class="sc-btn" onclick="C_sim(-1)" '+(l.sim.done===0?'disabled':'')+'>−</button>';
+  s.innerHTML+='<span class="sc-num">'+l.sim.done+'</span><span class="sc-target">/ '+l.sim.target+'</span>';
+  s.innerHTML+='<button class="sc-btn" onclick="C_sim(1)" '+(l.sim.done>=l.sim.target?'disabled':'')+'>+</button>';
+  s.innerHTML+='</div>';
+  s.innerHTML+='<div style="margin-top:8px;font-size:12px;color:var(--t2)">每次做完一笔模拟交易后点 +</div>';
+
+  // Learning pct: 11 items (books/docs/tools) = 80%, sim trades = 20%
+  var all=[].concat(l.books,l.docs,l.tools);
+  var itemDone=all.filter(function(x){return x.done}).length;
+  var itemPct=itemDone/all.length*80;        // 11 items → 80%
+  var simPct=(l.sim.done/l.sim.target)*20;   // 30 trades → 20%
+  document.getElementById('learningPct').textContent=Math.round(itemPct+simPct)+'%';
+
+  // Daily habits
+  var td=today(),hd=d.habits[td]||{},jDone=d.journal.filter(function(j){return j.date===td}).length>0;
+  var habits=[
+    {id:'h1',icon:'🌅',title:'8:00 盘前快扫',desc:'美股收盘+港交所公告',done:!!hd.h1},
+    {id:'h2',icon:'🛑',title:'9:30-10:30 只看不碰',desc:'开盘一小时绝不交易',done:!!hd.h2},
+    {id:'h3',icon:'📊',title:'12:00 午休看一眼',desc:'检查持仓+大盘方向',done:!!hd.h3},
+    {id:'h4',icon:'📝',title:'16:10 写三句话日记',desc:'冲动/持仓变化/新知识',done:!!hd.h4||jDone},
+    {id:'h5',icon:'📖',title:'晚上读研报/财报30分钟',desc:'深度研究而非刷行情',done:!!hd.h5}
   ];
-  document.getElementById('dailyHabits').innerHTML = habitItems.map(i=>`
-    <div class="check-item ${h[i.id]?'done':''}" onclick="toggleHabit('${i.id}')">
-      <div class="box">${h[i.id]?'✓':''}</div>
-      <div class="info"><div class="name">${i.icon} ${i.name}</div><div class="hint">${i.hint}</div></div>
-    </div>`).join('');
+  var hb=document.getElementById('dailyHabits');html='';
+  habits.forEach(function(x){
+    html+='<div class="check-item'+(x.done?' done':'')+'" onclick="C_habit(\''+x.id+'\')">';
+    html+='<div class="box">'+(x.done?'✓':'')+'</div><div class="info"><div class="name">'+x.icon+' '+x.title+'</div><div class="hint">'+x.desc+'</div></div></div>';
+  });
+  hb.innerHTML=html;
 
-  const isSunday = new Date().getDay() === 0;
-  const isFirst = new Date().getDate() <= 3;
-  const thisWeekKey = getWeekKey();
-  const thisMonthKey = getMonthKey();
-  const weeklyDone = DATA.weekly.some(w=>w.date===thisWeekKey);
-  const monthlyDone = DATA.monthly.some(m=>m.date===thisMonthKey);
-  document.getElementById('periodicTasks').innerHTML = `
-    <div class="check-item ${weeklyDone?'done':''}" onclick="${weeklyDone?'':"openWeeklyModal()"}">
-      <div class="box">${weeklyDone?'✓':''}</div>
-      <div class="info">
-        <div class="name">📈 每周复盘（周日 20:00）</div>
-        <div class="hint">${isSunday?'今天就是周日！':'本周操作复盘+估值更新+下周关注'} ${weeklyDone?'✅ 已完成':isSunday?'⏰ 今天':'📅 周日做'}</div>
-      </div>
-    </div>
-    <div class="check-item ${monthlyDone?'done':''}" onclick="${monthlyDone?'':"openMonthlyModal()"}">
-      <div class="box">${monthlyDone?'✓':''}</div>
-      <div class="info">
-        <div class="name">💰 月度检视（每月初）</div>
-        <div class="hint">净值变化+仓位再平衡+情绪检查 ${monthlyDone?'✅ 已完成':isFirst?'⏰ 现在做':'📅 月初做'}</div>
-      </div>
-    </div>`;
-}
-
-async function toggleLearning(cat, idx){
-  DATA.learning[cat][idx].done = !DATA.learning[cat][idx].done;
-  DATA.learning[cat][idx].doneAt = DATA.learning[cat][idx].done ? new Date().toISOString() : null;
-  await saveData();
-  refreshActiveTab();
-  toast(DATA.learning[cat][idx].done ? '✅ 标记完成' : '↩ 取消标记');
-}
-
-async function addSimTrade(){
-  if(DATA.learning.simTrades.done >= 30){ toast('已达标30笔！'); return; }
-  DATA.learning.simTrades.done++;
-  await saveData();
-  refreshActiveTab();
-  toast(`📊 模拟交易 ${DATA.learning.simTrades.done}/30`);
-}
-
-function getWeekKey(){
-  const d = new Date();
-  d.setHours(0,0,0,0);
-  d.setDate(d.getDate() - d.getDay());
-  return d.toISOString().slice(0,10);
-}
-
-function getMonthKey(){
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  // Periodic tasks
+  var pt=document.getElementById('periodicTasks'),wk=thisWeek(),mw=thisMonth(),pd=d._periodic||{};
+  var wDone=!!pd['w_'+wk],mDone=!!pd['m_'+mw];
+  pt.innerHTML='<div class="check-item'+(wDone?' done':'')+'" onclick="C_periodic(\'week\')">';
+  pt.innerHTML+='<div class="box">'+(wDone?'✓':'')+'</div><div class="info"><div class="name">📈 每周复盘（周日20:00）</div><div class="hint">本周操作复盘+估值更新+下周计划</div></div></div>';
+  pt.innerHTML+='<div class="check-item'+(mDone?' done':'')+'" onclick="C_periodic(\'month\')">';
+  pt.innerHTML+='<div class="box">'+(mDone?'✓':'')+'</div><div class="info"><div class="name">💰 月度检视</div><div class="hint">净值记录+再平衡+情绪检查</div></div></div>';
 }
 
 // ==================== JOURNAL ====================
-function renderJournal(){
-  const entries = [...DATA.journal].reverse();
-  const container = document.getElementById('journalList');
-  if(entries.length === 0){
-    container.innerHTML = '<div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志<br>每天收盘后写三句话</p></div>';
-    return;
+function R_journal(){
+  var d=L();
+  if(_journalSubTab==='daily'){
+    var list=document.getElementById('journalList');
+    if(!d.journal||d.journal.length===0){
+      list.innerHTML='<div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志</p></div>';
+      return;
+    }
+    var html='';
+    d.journal.slice().reverse().forEach(function(e){
+      html+='<div class="journal-entry">';
+      html+='<div class="j-date">'+fmt(e.date)+' <button class="del-btn" onclick="delJournal(\''+e.date+'\')" style="float:right;font-size:12px">🗑</button></div>';
+      if(e.line1) html+='<div class="j-line"><span class="j-label">冲动：</span><span>'+escHtml(e.line1)+'</span></div>';
+      if(e.line2) html+='<div class="j-line"><span class="j-label">持仓：</span><span>'+escHtml(e.line2)+'</span></div>';
+      if(e.line3) html+='<div class="j-line"><span class="j-label">学到：</span><span>'+escHtml(e.line3)+'</span></div>';
+      html+='</div>';
+    });
+    list.innerHTML=html;
+  } else if(_journalSubTab==='weekly'){
+    var list=document.getElementById('weeklyList');
+    if(!d.weekly||d.weekly.length===0){
+      list.innerHTML='<div class="empty-state"><div class="icon">📈</div><p>还没写过周复盘</p></div>';
+      return;
+    }
+    var html='';
+    d.weekly.slice().reverse().forEach(function(e){
+      html+='<div class="journal-entry">';
+      html+='<div class="j-date">📅 周：'+fmt(e.week)+' <button class="del-btn" onclick="delPeriodic(\'weekly\',\''+e.week+'\')" style="float:right;font-size:12px">🗑</button></div>';
+      if(e.review) html+='<div class="j-line"><span>'+escHtml(e.review)+'</span></div>';
+      if(e.valuation) html+='<div class="j-line"><span class="j-label">估值：</span><span>'+escHtml(e.valuation)+'</span></div>';
+      if(e.nextWeek) html+='<div class="j-line"><span class="j-label">下周：</span><span>'+escHtml(e.nextWeek)+'</span></div>';
+      html+='</div>';
+    });
+    list.innerHTML=html;
+  } else {
+    var list=document.getElementById('monthlyList');
+    if(!d.monthly||d.monthly.length===0){
+      list.innerHTML='<div class="empty-state"><div class="icon">💰</div><p>还没写过月检视</p></div>';
+      return;
+    }
+    var html='';
+    d.monthly.slice().reverse().forEach(function(e){
+      html+='<div class="journal-entry">';
+      html+='<div class="j-date">📅 '+e.month+' <button class="del-btn" onclick="delPeriodic(\'monthly\',\''+e.month+'\')" style="float:right;font-size:12px">🗑</button></div>';
+      if(e.net) html+='<div class="j-line"><span class="j-label">净值：</span><span>'+escHtml(e.net)+'</span></div>';
+      if(e.balance) html+='<div class="j-line"><span class="j-label">再平衡：</span><span>'+escHtml(e.balance)+'</span></div>';
+      if(e.emotion) html+='<div class="j-line"><span class="j-label">情绪：</span><span>'+escHtml(e.emotion)+'</span></div>';
+      html+='</div>';
+    });
+    list.innerHTML=html;
   }
-  container.innerHTML = entries.map(e=>`
-    <div class="card card-sm">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <span class="tag tag-red">${fmtFull(e.date)}</span>
-        <span style="font-size:10px;color:#bbb">${new Date(e.createdAt).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}</span>
-      </div>
-      <div class="j-line"><span class="j-label">🔴 冲动</span><span class="j-text">${escapeHtml(e.impulse||'—')}</span></div>
-      <div class="j-line"><span class="j-label">📊 持仓</span><span class="j-text">${escapeHtml(e.change||'—')}</span></div>
-      <div class="j-line"><span class="j-label">💡 学到</span><span class="j-text">${escapeHtml(e.learned||'—')}</span></div>
-    </div>`).join('');
+}
+
+function delJournal(date){
+  if(!confirm('删除 '+fmt(date)+' 的日志？')) return;
+  var d=L();
+  d.journal=d.journal.filter(function(j){return j.date!==date});
+  // Also clear related h4 habit toggle
+  if(d.habits[date]){d.habits[date].h4=false;}
+  S(d);refreshActiveTab();
+}
+
+function delPeriodic(type,key){
+  var label=type==='weekly'?'周复盘 ('+fmt(key)+')':'月检视 ('+key+')';
+  if(!confirm('删除 '+label+'？')) return;
+  var d=L();
+  if(type==='weekly'){d.weekly=d.weekly.filter(function(w){return w.week!==key});if(d._periodic)d._periodic['w_'+key]=false;}
+  else {d.monthly=d.monthly.filter(function(m){return m.month!==key});if(d._periodic)d._periodic['m_'+key]=false;}
+  S(d);refreshActiveTab();
 }
 
 function openJournalModal(){
-  document.getElementById('modalContainer').innerHTML = `
-    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
-      <div class="modal">
-        <div class="modal-title">📝 今日投资日记</div>
-        <div class="field"><label>① 今天有什么交易冲动？</label><textarea id="jImpulse" placeholder="如实写..."></textarea></div>
-        <div class="field"><label>② 持仓中有什么值得关注的变化？</label><textarea id="jChange" placeholder="如实写..."></textarea></div>
-        <div class="field"><label>③ 今天学到的知识点</label><textarea id="jLearned" placeholder="如实写..."></textarea></div>
-        <div class="modal-btns">
-          <button class="btn btn-outline" onclick="closeModal()">取消</button>
-          <button class="btn btn-primary" onclick="saveJournal()">保存</button>
-        </div>
-      </div>
-    </div>`;
+  openModal();
+  var d=L(),td=today(),ex=d.journal.filter(function(j){return j.date===td})[0]||{};
+  document.getElementById('modalContainer').innerHTML='\
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
+      <div class="modal">\
+        <div class="modal-title">✏️ 投资日志 — '+fmt(td)+'</div>\
+        <div class="field"><label>1. 今天我有什么冲动没执行？为什么？</label><textarea id="j1" rows="2">'+escHtml(ex.line1||'')+'</textarea></div>\
+        <div class="field"><label>2. 持仓中有哪只值得关注的变化？</label><textarea id="j2" rows="2">'+escHtml(ex.line2||'')+'</textarea></div>\
+        <div class="field"><label>3. 今天我学到的一个知识点</label><textarea id="j3" rows="2">'+escHtml(ex.line3||'')+'</textarea></div>\
+        <div class="modal-btns"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveJournal()">保存</button></div>\
+      </div></div>';
 }
 
-async function saveJournal(){
-  const impulse = document.getElementById('jImpulse').value.trim();
-  const change = document.getElementById('jChange').value.trim();
-  const learned = document.getElementById('jLearned').value.trim();
-  if(!impulse && !change && !learned){ toast('至少写一项'); return; }
-  DATA.journal.push({date:today(),impulse,change,learned,createdAt:new Date().toISOString()});
-  if(!DATA.habits[today()]) DATA.habits[today()] = {};
-  DATA.habits[today()].journal = true;
-  await saveData();
-  closeModal();
-  refreshActiveTab();
-  toast('✅ 日志已保存');
+function saveJournal(){
+  var l1=document.getElementById('j1').value.trim();
+  var l2=document.getElementById('j2').value.trim();
+  var l3=document.getElementById('j3').value.trim();
+  if(!l1&&!l2&&!l3){closeModal();return}
+  var d=L(),td=today();
+  d.journal=d.journal.filter(function(j){return j.date!==td});
+  d.journal.push({date:td,line1:l1,line2:l2,line3:l3,ts:Date.now()});
+  S(d);closeModal();refreshActiveTab();toast('✅ 日志已保存');
 }
 
 function openWeeklyModal(){
-  document.getElementById('modalContainer').innerHTML = `
-    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
-      <div class="modal">
-        <div class="modal-title">📈 周复盘</div>
-        <div class="field"><label>本周操作复盘（对在哪、错在哪）</label><textarea id="wReview"></textarea></div>
-        <div class="field"><label>下周关注什么事件？</label><textarea id="wNext"></textarea></div>
-        <div class="modal-btns">
-          <button class="btn btn-outline" onclick="closeModal()">取消</button>
-          <button class="btn btn-primary" onclick="saveWeekly()">保存</button>
-        </div>
-      </div>
-    </div>`;
+  openModal();
+  var d=L(),wk=thisWeek(),ex=d.weekly.filter(function(w){return w.week===wk})[0]||{};
+  document.getElementById('modalContainer').innerHTML='\
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
+      <div class="modal">\
+        <div class="modal-title">📈 周复盘 — '+fmt(wk)+'</div>\
+        <div class="field"><label>本周操作复盘（做对/做错/原因）</label><textarea id="w1" rows="3">'+escHtml(ex.review||'')+'</textarea></div>\
+        <div class="field"><label>持仓估值更新（PE/PB/股息率变化）</label><textarea id="w2" rows="3">'+escHtml(ex.valuation||'')+'</textarea></div>\
+        <div class="field"><label>下周关注事件</label><textarea id="w3" rows="2">'+escHtml(ex.nextWeek||'')+'</textarea></div>\
+        <div class="modal-btns"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveWeekly()">保存</button></div>\
+      </div></div>';
 }
 
-async function saveWeekly(){
-  const review = document.getElementById('wReview').value.trim();
-  const next = document.getElementById('wNext').value.trim();
-  if(!review && !next){ toast('至少写一项'); return; }
-  DATA.weekly.push({date:getWeekKey(),week:`W${Math.ceil(new Date().getDate()/7)}`,review,next,createdAt:new Date().toISOString()});
-  await saveData();
-  closeModal();
-  refreshActiveTab();
-  toast('✅ 周复盘已保存');
+function saveWeekly(){
+  var w1=document.getElementById('w1').value.trim();
+  var w2=document.getElementById('w2').value.trim();
+  var w3=document.getElementById('w3').value.trim();
+  if(!w1&&!w2&&!w3){closeModal();return}
+  var d=L(),wk=thisWeek();
+  d.weekly=d.weekly.filter(function(w){return w.week!==wk});
+  d.weekly.push({week:wk,review:w1,valuation:w2,nextWeek:w3,ts:Date.now()});
+  if(!d._periodic)d._periodic={};d._periodic['w_'+wk]=true;
+  S(d);closeModal();refreshActiveTab();toast('✅ 周复盘已保存');
 }
 
-let _selectedEmotion = '';
 function openMonthlyModal(){
-  document.getElementById('modalContainer').innerHTML = `
-    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
-      <div class="modal">
-        <div class="modal-title">💰 月度检视</div>
-        <div class="field"><label>本月净值变化</label><input id="mNetValue" placeholder="如：+3.2% 或 -1.5%"></div>
-        <div class="field"><label>仓位再平衡情况</label><textarea id="mAllocation" placeholder="有没有单只超过25%？现金比例是否>10%？"></textarea></div>
-        <div class="field"><label>本月投资情绪</label>
-          <div style="display:flex;gap:8px;margin-top:6px" id="emotionPicker">
-            <button class="btn btn-sm btn-outline" onclick="selectEmotion('贪婪')" style="flex:1">😤 贪婪</button>
-            <button class="btn btn-sm btn-outline" onclick="selectEmotion('恐惧')" style="flex:1">😨 恐惧</button>
-            <button class="btn btn-sm btn-outline" onclick="selectEmotion('平静')" style="flex:1">😌 平静</button>
-          </div>
-          <input type="hidden" id="mEmotion" value="">
-        </div>
-        <div class="modal-btns">
-          <button class="btn btn-outline" onclick="closeModal()">取消</button>
-          <button class="btn btn-primary" onclick="saveMonthly()">保存</button>
-        </div>
-      </div>
-    </div>`;
+  openModal();
+  var d=L(),mo=thisMonth(),ex=d.monthly.filter(function(x){return x.month===mo})[0]||{};
+  document.getElementById('modalContainer').innerHTML='\
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">\
+      <div class="modal">\
+        <div class="modal-title">💰 月检视 — '+mo+'</div>\
+        <div class="field"><label>本月净值变化（对比上月）</label><input id="m1" placeholder="净值 +X% 或 -X%" value="'+escAttr(ex.net||'')+'"></div>\
+        <div class="field"><label>持仓是否需要再平衡？</label><textarea id="m2" rows="2">'+escHtml(ex.balance||'')+'</textarea></div>\
+        <div class="field"><label>我的情绪状态：贪婪 / 恐惧 / 平静？</label><textarea id="m3" rows="2">'+escHtml(ex.emotion||'')+'</textarea></div>\
+        <div class="modal-btns"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveMonthly()">保存</button></div>\
+      </div></div>';
 }
 
-function selectEmotion(e){
-  _selectedEmotion = e;
-  document.getElementById('mEmotion').value = e;
-  const btns = document.querySelectorAll('#emotionPicker button');
-  btns.forEach(b=>{b.classList.remove('btn-primary');b.classList.add('btn-outline');});
-  event.target.classList.remove('btn-outline');
-  event.target.classList.add('btn-primary');
+function saveMonthly(){
+  var m1=document.getElementById('m1').value.trim();
+  var m2=document.getElementById('m2').value.trim();
+  var m3=document.getElementById('m3').value.trim();
+  if(!m1&&!m2&&!m3){closeModal();return}
+  var d=L(),mo=thisMonth();
+  d.monthly=d.monthly.filter(function(x){return x.month!==mo});
+  d.monthly.push({month:mo,net:m1,balance:m2,emotion:m3,ts:Date.now()});
+  if(!d._periodic)d._periodic={};d._periodic['m_'+mo]=true;
+  S(d);closeModal();refreshActiveTab();toast('✅ 月检视已保存');
 }
-
-async function saveMonthly(){
-  const netValue = document.getElementById('mNetValue').value.trim();
-  const allocation = document.getElementById('mAllocation').value.trim();
-  const emotion = _selectedEmotion;
-  if(!netValue && !allocation && !emotion){ toast('至少填一项'); return; }
-  DATA.monthly.push({date:getMonthKey(),month:`${new Date().getMonth()+1}月`,netValue,allocation,emotion,createdAt:new Date().toISOString()});
-  await saveData();
-  closeModal(); _selectedEmotion = '';
-  refreshActiveTab();
-  toast('✅ 月度检视已保存');
-}
-
-function closeModal(){ document.getElementById('modalContainer').innerHTML = ''; _selectedEmotion = ''; }
 
 // ==================== DISCIPLINE ====================
-function renderDiscipline(){
-  const rules = [
-    '单只股票不超过总资金 20%','永远保留 10% 现金','亏损超 20% 无条件止损',
-    '9:30-10:30 不做任何交易','每次下单前，先喝一杯水，等10分钟',
-    '买入前必须写出三条理由（不是"会涨"）','不融资、不杠杆��不借钱炒股',
-    '每周日复盘，每月1号再平衡','不在社交媒体上公开讨论具体持仓',
-    '年亏损超15%，停止交易1个月反思',
+function R_discipline(){
+  var d=L(),dList=d.discipline||[];
+  var rules=[
+    {n:1,t:'单一标的不超总仓位 20%'},
+    {n:2,t:'现金永远不低于总资产 10%'},
+    {n:3,t:'不做日内交易、不追涨杀跌、不碰庄股仙股'},
+    {n:4,t:'分批建仓，6 个月打满，不一把梭'},
+    {n:5,t:'单只涨超 50% → 卖一半锁利润'},
+    {n:6,t:'单只跌超 25% → 止损，不幻想回本'},
+    {n:7,t:'每次想买卖 → 先喝水等 10 分钟再决定'},
+    {n:8,t:'退休前 1 年（2032）→ 股票降到 30% 以下'},
+    {n:9,t:'不跟群消息买、不听 "内幕消息"、不看抖音荐股'},
+    {n:10,t:'每年 12 月做一次全面再平衡'}
   ];
-  const violations = DATA.discipline;
-  const hasViolation = violations.length > 0;
-  document.getElementById('disciplineStatus').textContent = hasViolation ? '⚠ 有违规' : '守纪中';
-  document.getElementById('disciplineStatus').className = 'tag ' + (hasViolation ? 'tag-orange' : 'tag-green');
 
-  document.getElementById('disciplineRules').innerHTML = rules.map((r,i)=>{
-    const vRecord = violations.filter(v=>v.ruleId===i);
-    const violated = vRecord.length > 0;
-    return `<div class="rule-item ${violated?'violated':''}">
-      <div class="rule-num">${i+1}</div>
-      <div class="rule-text">${r}${violated?`<br><span style="font-size:11px;color:var(--accent)">⚠ 违规 ${vRecord.length} 次</span>`:''}</div>
-      <button class="violate-btn" onclick="reportViolation(${i})">📝</button>
-    </div>`;
-  }).join('');
+  var html='',anyV=false;
+  rules.forEach(function(r){
+    var v=dList.filter(function(x){return x.rule===r.n}).length;
+    if(v>0) anyV=true;
+    html+='<div class="rule-item'+(v>0?' violated':'')+'">';
+    html+='<div class="rule-num">'+r.n+'</div><div class="rule-text">'+r.t+'</div>';
+    html+='<button class="violate-btn" onclick="violateRule('+r.n+')">'+(v>0?'⚠ '+v+'次·再点撤销':'📝 记录违规')+'</button></div>';
+  });
+  document.getElementById('disciplineRules').innerHTML=html;
+  document.getElementById('disciplineStatus').textContent=anyV?'有违规':'守纪中';
+  document.getElementById('disciplineStatus').className='tag '+(anyV?'tag-red':'tag-gn');
 
-  const dontBuy = ['亏损的科技公司（不知道何时盈利）','日均成交额低于1000万港币的票','大股东持续减持的股票','有合股/供股历史的公司（老千股）','靠"概念"炒作的票（元宇宙、Web3）','不理解业务模式的公司','因"跌多了"就买（≠ 被低估）','因"别人推荐"就买'];
-  document.getElementById('dontBuyList').innerHTML = dontBuy.map(d=>`
-    <div class="check-item" style="cursor:default">
-      <div class="box" style="border-color:var(--accent);color:var(--accent)">✕</div>
-      <div class="info"><div class="name" style="font-size:13px;font-weight:400">${d}</div></div>
-    </div>`).join('');
+  var dont=[{n:1,t:'PE > 50 且无盈利增长支撑的'},{n:2,t:'日均成交额 < 1000万港币的'},{n:3,t:'上市不满 3 年的'},{n:4,t:'有财务造假嫌疑/被做空机构盯上的'},{n:5,t:'主营业务你一句话说不清楚的'},{n:6,t:'管理层频繁变动的'},{n:7,t:'负债率 > 70% 且现金流为负的'},{n:8,t:'任何 "保证收益" 的产品/项目'}];
+  html='';
+  dont.forEach(function(r){
+    html+='<div class="rule-item"><div class="rule-num">'+r.n+'</div><div class="rule-text">'+r.t+'</div></div>';
+  });
+  document.getElementById('dontBuyList').innerHTML=html;
 }
 
-async function reportViolation(ruleId){
-  const note = prompt('简单记录违规情况（可选）：');
-  if(note === null) return;
-  DATA.discipline.push({ruleId,date:today(),note:note||'',createdAt:new Date().toISOString()});
-  await saveData();
-  renderDiscipline();
-  toast('⚠ 违规已记录');
+function violateRule(n){
+  var d=L();
+  if(!d.discipline) d.discipline=[];
+  var ex=d.discipline.filter(function(x){return x.rule===n});
+  if(ex.length>0){
+    // Only remove the most recent violation (repeated violations stack, undo removes latest)
+    for(var i=d.discipline.length-1;i>=0;i--){
+      if(d.discipline[i].rule===n){d.discipline.splice(i,1);break;}
+    }
+    S(d);refreshActiveTab();toast('✅ 已撤销第 '+n+' 条最近违规');
+  } else {
+    d.discipline.push({rule:n,date:today(),ts:Date.now()});
+    S(d);refreshActiveTab();toast('⚠ 已记录第 '+n+' 条违规');
+  }
 }
 
-// ==================== TAB NAVIGATION ====================
-let activeTab = 'dashboard';
-function switchTab(tab){
-  activeTab = tab;
-  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.querySelector(`.nav-item[data-tab="${tab}"]`).classList.add('active');
-  refreshActiveTab();
+// ==================== EXPORT / IMPORT ====================
+function exportData(){
+  var d=L();
+  var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='港股打卡备份_'+today()+'.json';
+  a.click();toast('✅ 已导出备份文件');
 }
-
-async function refreshActiveTab(){
-  if(activeTab==='dashboard') renderDashboard();
-  else if(activeTab==='checkin') renderCheckin();
-  else if(activeTab==='journal') renderJournal();
-  else if(activeTab==='discipline') renderDiscipline();
+function importData(input){
+  var file=input.files[0];if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var d=JSON.parse(e.target.result);
+      if(!d.learning||!d.habits){alert('文件格式不对，请选择导出生成的 .json 文件');return}
+      S(d);refreshActiveTab();toast('✅ 数据已恢复');
+    }catch(err){alert('无法解析文件')}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+function resetAll(){
+  if(!confirm('⚠ 确定要删除所有数据吗？建议先导出备份。')) return;
+  if(!confirm('再次确认：所有学习进度、打卡记录、日志将永久丢失。')) return;
+  S(def());
+  localStorage.removeItem(K);
+  location.reload();
+}
+function updateStreak(){
+  var d=L(),td=new Date(),streak=0;
+  for(var i=0;i<365;i++){
+    var dt=new Date(td);dt.setDate(dt.getDate()-i);
+    var ds=dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate());
+    var hd=d.habits[ds]||{};
+    var jd=d.journal.filter(function(j){return j.date===ds}).length>0;
+    // Day counts if: wrote journal, OR completed core 2 habits (h1+h2), OR 3+ habits done
+    var coreCnt=0;['h1','h2','h3','h4','h5'].forEach(function(h){if(hd[h])coreCnt++});
+    if(jd||coreCnt>=3||(hd.h1&&hd.h2)) streak++;
+    else break;
+  }
+  document.getElementById('streakCount').textContent=streak;
 }
 
 // ==================== INIT ====================
-async function init(){
-  await initData();
-
-  refreshActiveTab();
-}
-
-init();
+refreshActiveTab();
 </script>
 </body>
 </html>
