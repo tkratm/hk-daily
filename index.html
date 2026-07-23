@@ -482,8 +482,9 @@ function thisWeek(){
   return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
 }
 function thisMonth(){return today().slice(0,7)}
+function fmt(d){return d?d.replace(/-/g,'/'):''}
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function escAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}
+function escAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 
 // ==================== MODAL HELPERS ====================
 var _scrollY=0;
@@ -595,6 +596,11 @@ function C_learning(gid,id){
 
 function C_habit(id){
   var d=L(),td=today();
+  // h4 = journal habit; if journal exists today, it's auto-done
+  if(id==='h4'){
+    var jd=d.journal.filter(function(j){return j.date===td}).length>0;
+    if(jd){toast('💡 已通过投资日志完成，无需单独打卡');return;}
+  }
   if(!d.habits[td]) d.habits[td]={};
   d.habits[td][id]=!d.habits[td][id];
   S(d);refreshActiveTab();
