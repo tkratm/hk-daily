@@ -205,8 +205,31 @@ body{
 .chat-input-bar button:disabled{opacity:.4}
 .chat-input-bar .chat-mic{background:var(--bg);color:var(--t);border:0.5px solid var(--br)}
 .chat-input-bar .chat-mic.recording{background:var(--red);color:#fff;border-color:var(--red)}
+.chat-input-bar .chat-mic.voice-on{background:var(--bl);color:#fff;border-color:var(--bl)}
 .chat-input-bar #rtBtn2.on{background:var(--bll);color:var(--bl);border:0.5px solid var(--bl)}
 .chat-input-bar #rtBtn2.off{background:var(--bg);color:var(--t3);border:0.5px solid var(--br)}
+
+/* ===== 语音模式：按住说话 ===== */
+.chat-voice{display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px 16px calc(24px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:0.5px solid var(--br);flex-shrink:0;background:linear-gradient(180deg,var(--card) 0%,var(--bll) 100%)}
+.cv-hint{font-size:13px;color:var(--t3);letter-spacing:.5px;height:18px;transition:color .2s}
+.cv-hint.cancel{color:var(--red);font-weight:600}
+.cv-btn{width:100%;max-width:520px;height:64px;border-radius:32px;border:none;background:var(--bl);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;font-weight:500;cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:none;transition:transform .12s,background .2s;box-shadow:0 4px 16px rgba(0,122,255,.3)}
+.cv-btn:active,.cv-btn.pressing{transform:scale(0.97);background:#0056CC}
+.cv-btn.cancel{background:var(--red);box-shadow:0 4px 16px rgba(255,59,48,.3)}
+.cv-btn .cv-icon{display:inline-flex}
+.cv-btn .cv-wave{display:none;align-items:flex-end;gap:2px;height:18px}
+.cv-btn .cv-wave span{width:2.5px;background:#fff;border-radius:2px;animation:cvWave .8s ease-in-out infinite}
+.cv-btn .cv-wave span:nth-child(1){height:6px;animation-delay:0s}
+.cv-btn .cv-wave span:nth-child(2){height:12px;animation-delay:.1s}
+.cv-btn .cv-wave span:nth-child(3){height:18px;animation-delay:.2s}
+.cv-btn .cv-wave span:nth-child(4){height:12px;animation-delay:.3s}
+.cv-btn .cv-wave span:nth-child(5){height:6px;animation-delay:.4s}
+.cv-btn.recording .cv-icon{display:none}
+.cv-btn.recording .cv-wave{display:flex}
+.cv-btn.cancel .cv-text::before{content:"松开取消"}
+.cv-btn.cancel .cv-text{font-size:0}
+.cv-btn.cancel .cv-text::before{font-size:17px}
+@keyframes cvWave{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
 .chat-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t2);gap:8px}
 .chat-empty .ce-icon{width:56px;height:56px;border-radius:50%;background:var(--bll);display:flex;align-items:center;justify-content:center}
 .chat-hints{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;max-width:260px;justify-content:center}
@@ -514,12 +537,20 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
   </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-quick" id="chatQuick"></div>
-  <div class="chat-input-bar">
+  <div class="chat-input-bar" id="chatInputBar">
     <button id="rtBtn2" onclick="toggleRealtime()" aria-label="实时联网" title="实时行情+联网"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></button>
-    <button class="chat-mic" id="micBtn" aria-label="语音输入"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>
+    <button class="chat-mic" id="micBtn" onclick="toggleVoiceMode()" aria-label="切换语音输入"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>
     <input id="chatInput" type="text" placeholder="问港股相关问题…" autocomplete="off">
     <button id="chatSendBtn" onclick="sendChat()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="chat-voice" id="chatVoice" style="display:none">
+    <div class="cv-hint" id="cvHint">松手发送，上移取消</div>
+    <button class="cv-btn" id="cvBtn" aria-label="按住说话">
+      <span class="cv-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></span>
+      <span class="cv-wave"><span></span><span></span><span></span><span></span><span></span></span>
+      <span class="cv-text">按住 说话</span>
     </button>
   </div>
   <div class="chat-drawer-mask" id="drawerMask" onclick="closeConvDrawer()"></div>
@@ -543,7 +574,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='21';
+const APP_VER='22';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -1433,33 +1464,115 @@ function marketBrief(){
   document.head.appendChild(s);
 }
 
-// 🎤 语音输入（按住说话）
-var _rec=null,_recOn=false;
-function updateMicUI(on){
+// 🎤 语音输入（豆包模式：点 mic 切到语音态，按住大按钮说话）
+var _rec=null,_recOn=false,_voiceMode=false,_dragCancel=false;
+function updateMicUI(){
   var b=document.getElementById('micBtn');
-  if(b) b.classList.toggle('rec',!!on);
+  if(!b) return;
+  if(_voiceMode) b.classList.add('voice-on');
+  else b.classList.remove('voice-on');
 }
-function micDown(e){
-  if(e)e.preventDefault();
+function toggleVoiceMode(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){toast('当前设备不支持语音输入');return}
+  _voiceMode=!_voiceMode;
+  var bar=document.getElementById('chatInputBar');
+  var vp=document.getElementById('chatVoice');
+  if(_voiceMode){
+    bar.style.display='none';
+    vp.style.display='flex';
+    setTimeout(scrollChat,100);
+  }else{
+    if(_recOn) try{_rec.stop()}catch(err){}
+    bar.style.display='';
+    vp.style.display='none';
+  }
+  updateMicUI();
+}
+function micDown(e){
+  if(e){e.preventDefault();e.stopPropagation()}
   if(_recOn)return;
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  _dragCancel=false;
+  var btn=document.getElementById('cvBtn');
+  var hint=document.getElementById('cvHint');
+  var txt=btn.querySelector('.cv-text');
+  btn.classList.add('pressing','recording');
+  hint.classList.remove('cancel');
+  hint.textContent='松手发送，上移取消';
+  if(txt)txt.textContent='正在聆听…';
   try{
     _rec=new SR();
-    _rec.lang='zh-CN';_rec.interimResults=false;_rec.continuous=true;
+    _rec.lang='zh-CN';_rec.interimResults=false;_rec.continuous=false;
     _rec.onresult=function(ev){
       var t='';
       for(var i=0;i<ev.results.length;i++) t+=ev.results[i][0].transcript;
-      if(t){var inp=document.getElementById('chatInput');inp.value=(inp.value+' '+t).trim()}
+      if(t){
+        // 退出语音模式回键盘，文字进输入框
+        toggleVoiceMode();
+        setTimeout(function(){
+          var inp=document.getElementById('chatInput');
+          inp.value=t;
+          inp.focus();
+        },50);
+      }
     };
-    _rec.onend=function(){_recOn=false;updateMicUI(false)};
-    _rec.onerror=function(){_recOn=false;updateMicUI(false)};
-    _rec.start();_recOn=true;updateMicUI(true);
-  }catch(err){toast('语音启动失败')}
+    _rec.onend=function(){_recOn=false;resetCvBtn()};
+    _rec.onerror=function(ev){
+      _recOn=false;resetCvBtn();
+      if(ev.error==='not-allowed'||ev.error==='service-not-allowed'){
+        toast('请允许使用麦克风');
+      }else if(ev.error!=='aborted'){
+        toast('语音识别失败');
+      }
+    };
+    _rec.start();_recOn=true;
+  }catch(err){
+    _recOn=false;resetCvBtn();
+    toast('语音启动失败');
+  }
 }
 function micUp(e){
-  if(e)e.preventDefault();
-  if(_rec&&_recOn){try{_rec.stop()}catch(err){}}
+  if(e){e.preventDefault();e.stopPropagation()}
+  if(!_recOn)return;
+  if(_dragCancel){
+    // 拖到取消区 → 放弃这次录音
+    try{_rec.abort?_rec.abort():_rec.stop()}catch(err){}
+    toast('已取消');
+  }else{
+    try{_rec.stop()}catch(err){}
+  }
+}
+function micMove(e){
+  if(!_recOn||!e||!e.touches||!e.touches[0])return;
+  var y=e.touches[0].clientY;
+  var btn=document.getElementById('cvBtn');
+  var rect=btn.getBoundingClientRect();
+  var btnCenter=rect.top+rect.height/2;
+  var cancel=y<btnCenter-30;
+  _dragCancel=cancel;
+  var hint=document.getElementById('cvHint');
+  var txt=btn.querySelector('.cv-text');
+  if(cancel){
+    btn.classList.add('cancel');
+    hint.classList.add('cancel');
+    hint.textContent='松开取消';
+    if(txt)txt.textContent='松开取消';
+  }else{
+    btn.classList.remove('cancel');
+    hint.classList.remove('cancel');
+    hint.textContent='松手发送，上移取消';
+    if(txt)txt.textContent='正在聆听…';
+  }
+}
+function resetCvBtn(){
+  var btn=document.getElementById('cvBtn');
+  var hint=document.getElementById('cvHint');
+  var txt=btn?btn.querySelector('.cv-text'):null;
+  if(btn){btn.classList.remove('pressing','recording','cancel')}
+  if(hint){hint.classList.remove('cancel');hint.textContent='松手发送，上移取消'}
+  if(txt)txt.textContent='按住 说话';
 }
 
 // 回车发送 + 键盘弹起滚底 + 绑定语音按钮
@@ -1542,13 +1655,18 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   var mb=document.getElementById('micBtn');
   if(mb){
-    mb.addEventListener('touchstart',micDown,{passive:false});
-    mb.addEventListener('touchend',micUp,{passive:false});
-    mb.addEventListener('mousedown',micDown);
-    mb.addEventListener('mouseup',micUp);
-    mb.addEventListener('contextmenu',function(e){e.preventDefault()});
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     if(!SR) mb.style.visibility='hidden';
+  }
+  var cv=document.getElementById('cvBtn');
+  if(cv){
+    cv.addEventListener('touchstart',micDown,{passive:false});
+    cv.addEventListener('touchend',micUp,{passive:false});
+    cv.addEventListener('touchmove',micMove,{passive:false});
+    cv.addEventListener('touchcancel',micUp,{passive:false});
+    cv.addEventListener('mousedown',micDown);
+    cv.addEventListener('mouseup',micUp);
+    cv.addEventListener('contextmenu',function(e){e.preventDefault()});
   }
   // 实时按钮初始态同步
   setRealtime(getRealtime());
