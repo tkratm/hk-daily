@@ -196,14 +196,17 @@ body{
 .chat-loading span:nth-child(2){animation-delay:.2s}
 .chat-loading span:nth-child(3){animation-delay:.4s}
 @keyframes chatBounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-.chat-input-bar{display:flex;gap:8px;padding:10px 16px;padding-bottom:max(10px,env(safe-area-inset-bottom,10px));
-  background:var(--card);border-top:0.5px solid var(--br)}
-.chat-input-bar input{flex:1;padding:10px 14px;border:0.5px solid var(--br);border-radius:20px;font-size:17px;
+.chat-input-bar{display:flex;gap:6px;padding:6px 12px;align-items:center;background:var(--card);border-top:0.5px solid var(--br);flex-shrink:0;padding-bottom:max(6px,env(safe-area-inset-bottom,6px))}
+.chat-input-bar input{flex:1;height:36px;line-height:36px;padding:0 14px;border:0.5px solid var(--br);border-radius:20px;font-size:17px;
   background:var(--bg);outline:none;-webkit-appearance:none}
 .chat-input-bar input:focus{border-color:var(--bl)}
 .chat-input-bar button{width:36px;height:36px;border-radius:50%;border:none;background:var(--bl);color:#fff;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .chat-input-bar button:disabled{opacity:.4}
+.chat-input-bar .chat-mic{background:var(--bg);color:var(--t);border:0.5px solid var(--br)}
+.chat-input-bar .chat-mic.recording{background:var(--red);color:#fff;border-color:var(--red)}
+.chat-input-bar #rtBtn2.on{background:var(--bll);color:var(--bl);border:0.5px solid var(--bl)}
+.chat-input-bar #rtBtn2.off{background:var(--bg);color:var(--t3);border:0.5px solid var(--br)}
 .chat-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t2);gap:8px}
 .chat-empty .ce-icon{width:56px;height:56px;border-radius:50%;background:var(--bll);display:flex;align-items:center;justify-content:center}
 .chat-hints{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;max-width:260px;justify-content:center}
@@ -215,6 +218,7 @@ body{
 .chat-topbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card);border-bottom:0.5px solid var(--br);flex-shrink:0}
 .chat-topbar button{width:40px;height:40px;border-radius:50%;border:none;background:var(--bg);color:var(--t);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .chat-topbar button:active{background:var(--bll);color:var(--bl)}
+.chat-topbar #rtBtn.on{background:var(--bl);color:#fff}
 .chat-title{flex:1;text-align:center;font-size:16px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--t)}
 .chat-quick{display:flex;gap:6px;padding:8px 16px;overflow-x:auto;background:var(--card);border-top:0.5px solid var(--br);-webkit-overflow-scrolling:touch;flex-shrink:0;
   mask-image:linear-gradient(to right,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);
@@ -505,17 +509,13 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
   <div class="chat-topbar">
     <button onclick="openConvDrawer()" aria-label="对话列表"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg></button>
     <div class="chat-title" id="chatTitle">新对话</div>
+    <button id="rtBtn" onclick="toggleRealtime()" aria-label="实时联网" title="实时行情+联网"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></button>
     <button onclick="newChat()" aria-label="新建对话"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
   <div class="chat-messages" id="chatMessages"></div>
-  <div class="chat-quick">
-    <div class="chat-hint" onclick="marketBrief()">📊 今日盘面</div>
-    <div class="chat-hint" onclick="sendHint(this.textContent)">什么是集合竞价</div>
-    <div class="chat-hint" onclick="sendHint(this.textContent)">MACD金叉怎么看</div>
-    <div class="chat-hint" onclick="sendHint(this.textContent)">港股打新流程</div>
-    <div class="chat-hint" onclick="sendHint(this.textContent)">PE和PB的区别</div>
-  </div>
+  <div class="chat-quick" id="chatQuick"></div>
   <div class="chat-input-bar">
+    <button id="rtBtn2" onclick="toggleRealtime()" aria-label="实时联网" title="实时行情+联网"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></button>
     <button class="chat-mic" id="micBtn" aria-label="语音输入"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>
     <input id="chatInput" type="text" placeholder="问港股相关问题…" autocomplete="off">
     <button id="chatSendBtn" onclick="sendChat()">
@@ -543,7 +543,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='18';
+const APP_VER='19';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -1383,7 +1383,7 @@ function sendChat(dispOvr,apiOvr){
     else apiMsgs.push(ctx[i]);
   }
   setChatLoading(true);
-  fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:apiMsgs})})
+  fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:apiMsgs,realtime:getRealtime()})})
     .then(function(r){return r.json()})
     .then(function(d){
       setChatLoading(false);
@@ -1463,6 +1463,69 @@ function micUp(e){
 }
 
 // 回车发送 + 键盘弹起滚底 + 绑定语音按钮
+// ==================== AI: 每日动态提示词 ====================
+// 候选池（>=12 个，每天按日期 hash 抽 4 个，当天稳定）
+const HINT_POOL = [
+  { t: '今日盘面',  fn: 'marketBrief', icon: 'chart' },
+  { t: '什么是集合竞价', fn: 'sendHint' },
+  { t: 'MACD金叉怎么看', fn: 'sendHint' },
+  { t: '港股打新流程', fn: 'sendHint' },
+  { t: 'PE和PB的区别', fn: 'sendHint' },
+  { t: '如何看财报', fn: 'sendHint' },
+  { t: '止损止盈技巧', fn: 'sendHint' },
+  { t: '高股息策略', fn: 'sendHint' },
+  { t: '港股交易时间', fn: 'sendHint' },
+  { t: '美联储加息影响', fn: 'sendHint' },
+  { t: '比亚迪怎么看', fn: 'sendHint' },
+  { t: '腾讯估值分析', fn: 'sendHint' },
+  { t: '南向资金怎么看', fn: 'sendHint' },
+  { t: '复盘我的交易', fn: 'sendHint' },
+];
+function dailyHash(){
+  var d=new Date(Date.now()+8*3600*1000);
+  return d.getUTCFullYear()*10000+(d.getUTCMonth()+1)*100+d.getUTCDate();
+}
+function pickDailyHints(){
+  var seed=dailyHash();
+  var pool=HINT_POOL.slice();
+  // Fisher–Yates with seeded random
+  var rng=function(){seed=(seed*9301+49297)%233280;return seed/233280};
+  for(var i=pool.length-1;i>0;i--){
+    var j=Math.floor(rng()*(i+1));
+    var tmp=pool[i];pool[i]=pool[j];pool[j]=tmp;
+  }
+  return pool.slice(0,4);
+}
+function renderDailyHints(){
+  var box=document.getElementById('chatQuick');
+  if(!box) return;
+  var hints=pickDailyHints();
+  var html='';
+  for(var i=0;i<hints.length;i++){
+    var h=hints[i];
+    if(h.fn==='marketBrief'){
+      html+='<div class="chat-hint" onclick="marketBrief()">今日盘面</div>';
+    } else {
+      html+='<div class="chat-hint" onclick="sendHint(this.textContent)">'+h.t+'</div>';
+    }
+  }
+  box.innerHTML=html;
+}
+
+// ==================== AI: 实时联网开关 ====================
+function getRealtime(){
+  var v=localStorage.getItem('chatRealtime');
+  return v===null?true:(v==='1');
+}
+function setRealtime(on){
+  localStorage.setItem('chatRealtime',on?'1':'0');
+  var b1=document.getElementById('rtBtn'),b2=document.getElementById('rtBtn2');
+  if(b1){b1.classList.toggle('on',on);b1.classList.toggle('off',!on)}
+  if(b2){b2.classList.toggle('on',on);b2.classList.toggle('off',!on)}
+  toast(on?'已开启实时联网':'已关闭实时联网');
+}
+function toggleRealtime(){setRealtime(!getRealtime())}
+
 document.addEventListener('DOMContentLoaded',function(){
   var inp=document.getElementById('chatInput');
   if(inp){
@@ -1494,9 +1557,17 @@ document.addEventListener('DOMContentLoaded',function(){
   var origSwitchTab=switchTab;
   switchTab=function(t){
     origSwitchTab(t);
-    if(t==='ai') renderChat();
+    if(t==='ai'){
+      renderChat();
+      renderDailyHints();
+      setRealtime(getRealtime()); // 同步按钮态
+    }
   };
 })();
+
+// 启动时初始化实时按钮态 + 渲染今日提示词
+renderDailyHints();
+setRealtime(getRealtime());
 
 function updateStreak(){
   var d=L(),td=new Date(),streak=0;
