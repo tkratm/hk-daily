@@ -543,7 +543,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='16';
+const APP_VER='17';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -902,23 +902,23 @@ function R_journal(){
   if(_journalSubTab==='daily'){
     var list=document.getElementById('journalList');
     if(!d.journal||d.journal.length===0){
-      list.innerHTML='<div class="empty-state"><div class="icon">📝</div><p>还没写过投资日志</p></div>';
+      list.innerHTML='<div class="empty-state"><div class="icon">—</div><p>还没写过投资日志</p></div>';
       return;
     }
     var html='';
     d.journal.slice().reverse().forEach(function(e){
       html+='<div class="journal-entry">';
       html+='<div class="j-date">'+fmt(e.date)+' <button class="del-btn" onclick="delJournal(\''+e.date+'\')" style="float:right;font-size:12px">删除</button></div>';
-      if(e.line1) html+='<div class="j-line"><span class="j-label">冲动：</span><span>'+escHtml(e.line1)+'</span></div>';
-      if(e.line2) html+='<div class="j-line"><span class="j-label">持仓：</span><span>'+escHtml(e.line2)+'</span></div>';
-      if(e.line3) html+='<div class="j-line"><span class="j-label">学到：</span><span>'+escHtml(e.line3)+'</span></div>';
+      if(e.line1) html+='<div class="j-line"><span class="j-label">冲动：</span><span>'+escHtml(e.line1).replace(/\n/g,'<br>')+'</span></div>';
+      if(e.line2) html+='<div class="j-line"><span class="j-label">持仓：</span><span>'+escHtml(e.line2).replace(/\n/g,'<br>')+'</span></div>';
+      if(e.line3) html+='<div class="j-line"><span class="j-label">学到：</span><span>'+escHtml(e.line3).replace(/\n/g,'<br>')+'</span></div>';
       html+='</div>';
     });
     list.innerHTML=html;
   } else if(_journalSubTab==='weekly'){
     var list=document.getElementById('weeklyList');
     if(!d.weekly||d.weekly.length===0){
-      list.innerHTML='<div class="empty-state"><div class="icon">📈</div><p>还没写过周复盘</p></div>';
+      list.innerHTML='<div class="empty-state"><div class="icon">—</div><p>还没写过周复盘</p></div>';
       return;
     }
     var html='';
@@ -934,7 +934,7 @@ function R_journal(){
   } else if(_journalSubTab==='monthly'){
     var list=document.getElementById('monthlyList');
     if(!d.monthly||d.monthly.length===0){
-      list.innerHTML='<div class="empty-state"><div class="icon">💰</div><p>还没写过月检视</p></div>';
+      list.innerHTML='<div class="empty-state"><div class="icon">—</div><p>还没写过月检视</p></div>';
       return;
     }
     var html='';
@@ -957,7 +957,7 @@ function R_history(){
   var list=document.getElementById('historyList');
   var dates=Object.keys(d.habits||{}).sort().reverse();
   if(dates.length===0){
-    list.innerHTML='<div class="empty-state"><div class="icon">📊</div><p>还没打过卡</p><p style="font-size:12px;margin-top:8px">开始打卡后这里会显示每日习惯完成情况</p></div>';
+    list.innerHTML='<div class="empty-state"><div class="icon">—</div><p>还没打过卡</p><p style="font-size:12px;margin-top:8px">开始打卡后这里会显示每日习惯完成情况</p></div>';
     return;
   }
   var dayNames=['日','一','二','三','四','五','六'];
@@ -1237,7 +1237,9 @@ function delConv(id){
   if(st.active===id) st.active=st.list.length?st.list[0].id:null;
   saveStore(st);renderConvList();renderChat();
 }
+var _drawerScrollY=0;
 function openConvDrawer(){
+  _drawerScrollY=window.scrollY;
   renderConvList();
   document.getElementById('convDrawer').classList.add('open');
   document.getElementById('drawerMask').classList.add('open');
@@ -1247,6 +1249,7 @@ function closeConvDrawer(){
   var d=document.getElementById('convDrawer'),m=document.getElementById('drawerMask');
   if(d)d.classList.remove('open');if(m)m.classList.remove('open');
   document.body.classList.remove('drawer-locked');
+  window.scrollTo(0,_drawerScrollY);
 }
 function renderConvList(){
   var st=loadStore(),el=document.getElementById('convList');if(!el)return;
