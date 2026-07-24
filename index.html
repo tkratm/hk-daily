@@ -33,7 +33,7 @@ body{
   padding:12px 20px 10px;display:flex;align-items:center;justify-content:space-between;
   transition:transform .25s ease;
 }
-.header.hidden{transform:translateY(-100%);pointer-events:none;visibility:hidden}
+.header.hidden{display:none}
 .header h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
 .header .streak{
   font-size:12px;color:var(--red);background:var(--rl);
@@ -233,6 +233,7 @@ body{
 .chat-drawer-mask{position:fixed;inset:0;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:160}
 .chat-drawer-mask.open{opacity:1;pointer-events:auto}
 body.drawer-locked{overflow:hidden;position:fixed;width:100%}
+body.ai-locked{overflow:hidden;position:fixed;width:100%}
 .chat-drawer{position:fixed;top:0;left:-290px;width:265px;bottom:0;background:var(--card);z-index:170;transition:left .25s;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0)}
 .chat-drawer.open{left:0}
 .cd-head{padding:16px;font-size:15px;font-weight:700;border-bottom:0.5px solid var(--br);display:flex;justify-content:space-between;align-items:center}
@@ -545,7 +546,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='23';
+const APP_VER='24';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -687,6 +688,12 @@ function switchTab(t){
   document.querySelector('.nav-item[data-tab="'+t+'"]').classList.add('active');
   // AI tab 用自己的 chat-topbar，隐藏全局 header
   document.querySelector('.header').classList.toggle('hidden', t==='ai');
+  // AI tab 锁 body 滚动（fixed 容器内自己滚，body 不能动）
+  if(t==='ai'){
+    _aiScrollY=window.scrollY;document.body.style.top=-_aiScrollY+'px';document.body.classList.add('ai-locked');
+  }else{
+    document.body.classList.remove('ai-locked');document.body.style.top='';window.scrollTo(0,_aiScrollY);
+  }
   // 离开 AI 时如在语音态，强制退回键盘
   if(t!=='ai' && typeof _voiceMode!=='undefined' && _voiceMode){
     _voiceMode=false;document.getElementById('chatInputBar').style.display='';document.getElementById('chatVoice').style.display='none';
@@ -710,11 +717,13 @@ function refreshActiveTab(){
   var t=document.querySelector('.tab-content.active').id;
   var isAi=(t==='tab-ai');
   document.querySelector('.header').classList.toggle('hidden',isAi);
-  if(isAi) renderChat();
-  else if(t==='tab-dashboard') R_dashboard();
-  else if(t==='tab-checkin') R_checkin();
-  else if(t==='tab-journal') R_journal();
-  else if(t==='tab-discipline') R_discipline();
+  if(isAi){_aiScrollY=window.scrollY;document.body.style.top=-_aiScrollY+'px';document.body.classList.add('ai-locked');renderChat()}
+  else{document.body.classList.remove('ai-locked');document.body.style.top='';window.scrollTo(0,_aiScrollY);
+    if(t==='tab-dashboard') R_dashboard();
+    else if(t==='tab-checkin') R_checkin();
+    else if(t==='tab-journal') R_journal();
+    else if(t==='tab-discipline') R_discipline();
+  }
   updateStreak();
 }
 
@@ -1249,6 +1258,7 @@ function delConv(id){
   saveStore(st);renderConvList();renderChat();
 }
 var _drawerScrollY=0;
+var _aiScrollY=0;
 function openConvDrawer(){
   _drawerScrollY=window.scrollY;
   renderConvList();
