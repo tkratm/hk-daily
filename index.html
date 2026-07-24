@@ -493,7 +493,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='10';
+const APP_VER='11';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -1225,6 +1225,7 @@ function sendChat(){
     .then(function(r){return r.json()})
     .then(function(d){
       setChatLoading(false);
+      if(d.errorMessage) throw new Error(d.errorMessage);
       if(d.error){var em=d.error.message||d.error;throw new Error(em)}
       var reply=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;
       if(!reply) throw new Error('AI 返回为空');
