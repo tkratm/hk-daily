@@ -539,7 +539,7 @@ body.no-scroll{overflow:hidden;position:fixed;width:100%}
 
 <script>
 // 版本号——改代码后 +1，主屏幕图标自动刷新
-const APP_VER='14';
+const APP_VER='15';
 (function(){
   var v=localStorage.getItem('_app_ver');
   if(v!==APP_VER){localStorage.setItem('_app_ver',APP_VER);location.reload(true);return;}
@@ -1363,7 +1363,7 @@ function sendChat(dispOvr,apiOvr){
   c.ts=Date.now();
   saveStore(st);renderChat();
   var convId=c.id;
-  var apiMsgs=[{role:'system',content:'你是港股投资助手，用户在手机上随问随查。规则：1.简体中文回答，控制在200字以内 2.多用分点短句，少用长段落 3.术语首次出现用括号白话解释 4.用户说"展开"或"详细讲"再给长答案 5.涉及具体操作注明不构成投资建议。'}];
+  var apiMsgs=[{role:'system',content:'你是用户的私人AI助手，住在他的港股打卡App里。你尤其精通港股投资，但用户问什么都照常回答——生活、天气常识、技术、闲聊，绝不拒绝投资以外的问题。规则：1.简体中文，200字以内 2.分点短句，少用长段落 3.术语首次出现用括号白话解释 4.用户说"展开"或"详细讲"再给长答案 5.没有实时数据的问题（天气/新闻/股价），明说查不了实时数据，但仍给通用建议 6.涉及具体操作注明不构成投资建议。'}];
   var ctx=c.msgs.slice(-10);
   for(var i=0;i<ctx.length;i++){
     if(apiOvr&&i===ctx.length-1) apiMsgs.push({role:'user',content:apiText});
